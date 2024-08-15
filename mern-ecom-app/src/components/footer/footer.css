@@ -1,0 +1,11 @@
+footer {
+  box-shadow: 0px -2px 10px 0px silver; /* Top shadow */
+  z-index: 1000;
+  width: 100%;
+  bottom: 0;
+  background-color: rgb(243, 243, 243);
+}
+
+.center-content img {
+  width: 50px;
+}

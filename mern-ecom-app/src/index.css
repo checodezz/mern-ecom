@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  font-family: "Open-Sans", "Assistant", sans-serif;
+}
+
+main {
+  padding-top: 60px; /* Height of the header */
+  background-color: rgb(243, 243, 243);
+  min-height: calc(100vh - 80px);
+}
+
+/* Colors */
+.text-pink,
+.text-hover-pink:hover {
+  color: #ff3e6c;
+}
+
+.text-grey {
+  color: #878787;
+}
+
+.star-color {
+  color: #fed948;
+}
+
+.bg-lightgreen {
+  background-color: #e5f7ee;
+}
+
+.bg-lightgrey {
+  background-color: rgb(243, 243, 243);
+}
+
+.bg-pink {
+  background-color: #fc274b;
+}
+
+.border-pink {
+  border-color: #fc274b !important;
+}
+
+/* Buttons */
+.btn-pink {
+  background-color: #ff3e6c !important;
+  color: white !important;
+  cursor: pointer;
+}
+
+.btn-pink:hover,
+.bg-pink:hover {
+  opacity: 0.9;
+}
+
+/* Centering */
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* cursor pointer */
+.cursor-pointer {
+  cursor: pointer;
+}
