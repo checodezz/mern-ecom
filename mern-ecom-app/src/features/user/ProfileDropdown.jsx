@@ -22,24 +22,29 @@ const ProfileDropdown = () => {
       {user ? (
         <div className="dropdown">
           <Link
-            className="nav-link dropdown-toggle"
+            className="nav-link "
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
             {user?.profilePic ? (
               <img
-                className="rounded-circle"
+                className="img-fluid rounded-circle"
                 src={user?.profilePic}
                 alt={user?.name}
-                height={25}
-                width={25}
+                style={{ width: "35px", height: "35px" }}
               />
             ) : (
               <FaRegCircleUser size={25} />
             )}
           </Link>
           <ul className="dropdown-menu">
+            <li>
+              <Link className="dropdown-item" to="/admin-panel">
+                Admin Panel
+              </Link>
+            </li>
+
             <li>
               <Link className="dropdown-item" to="#">
                 Profile

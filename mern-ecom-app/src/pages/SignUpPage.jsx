@@ -1,11 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import loginIcon from "../../assets/signin.gif";
-import "./auth.css";
+import loginIcon from "../assets/signin.gif";
 import { useEffect, useState } from "react";
-import { imageToBase64 } from "../../utils/helpers";
+import { imageToBase64 } from "../utils/helpers";
 import { useDispatch, useSelector } from "react-redux";
-import { resetState, signupAsync } from "./authSlice";
+import { resetState, signupAsync } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 
 const SignUpPage = () => {
@@ -25,10 +24,7 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(message);
       navigate("/login");
-    } else if (isError) {
-      toast.error(message);
     }
     dispatch(resetState());
   }, [isSuccess, isError, message, navigate, dispatch]);
@@ -61,13 +57,16 @@ const SignUpPage = () => {
   };
 
   return (
-    <section id="sign-up">
-      <div className="bg-white px-2 py-4 w-50 mx-auto">
+    <section id="sign-up" className="my-5 d-flex justify-content-center">
+      <div
+        className="bg-white p-4 w-100 shadow-sm"
+        style={{ maxWidth: "400px" }}
+      >
         <div className="position-relative ">
           <div className="center-content ">
             <img
               src={formData.profilePic || loginIcon}
-              className="rounded-circle"
+              className="img-fluid rounded-circle"
               alt="Login Icon"
               style={{ width: "100px", height: "100px" }}
             />
@@ -158,12 +157,15 @@ const SignUpPage = () => {
             </div>
           </div>
 
-          <button className="btn btn-pink mt-2 mb-4 w-50 rounded-pill mx-auto d-flex justify-content-center align-items-center">
+          <button className="btn btn-pink mt-2 mb-4 w-100 rounded-pill ">
             Sign Up
           </button>
         </form>
         <p>
-          Already have an account ? <Link to={"/login"}>Login</Link>
+          Already have an account ?{" "}
+          <Link to={"/login"} className="text-decoration-none">
+            Login
+          </Link>
         </p>
       </div>
     </section>

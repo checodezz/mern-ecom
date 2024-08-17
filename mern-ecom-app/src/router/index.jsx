@@ -1,9 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import HomePage from "../pages/HomePage";
-import LoginPage from "../features/auth/LoginPage";
-import ForgotPasswordPage from "../features/auth/ForgotPasswordPage";
-import SignUpPage from "../features/auth/SignUpPage";
+import LoginPage from "../pages/LoginPage";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+import SignUpPage from "../pages/SignUpPage";
+import AdminPanelPage from "../pages/AdminPanelPage";
+import AllUsers from "../features/admin/AllUsers";
+import AllProducts from "../features/admin/AllProducts";
 
 const routes = createBrowserRouter([
   {
@@ -25,6 +28,20 @@ const routes = createBrowserRouter([
       {
         path: "sign-up",
         element: <SignUpPage />,
+      },
+      {
+        path: "admin-panel",
+        element: <AdminPanelPage />,
+        children: [
+          {
+            path: "all-users",
+            element: <AllUsers />,
+          },
+          {
+            path: "all-products",
+            element: <AllProducts />,
+          },
+        ],
       },
     ],
   },

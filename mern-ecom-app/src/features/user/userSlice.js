@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const domain = "http://localhost:8080/api";
+import API_DOMAIN from "../../config";
 
 // fetch user details
 export const fetchUserDetails = createAsyncThunk(
   "user/user-details",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`${domain}/user-details`, {
+      const response = await axios.get(`${API_DOMAIN}/user-details`, {
         withCredentials: true,
       });
       return response.data;
@@ -37,13 +37,13 @@ const userSlice = createSlice({
         state.isSuccess = true;
         state.user = action.payload.data;
         state.message =
-          action.payload.message || "User details fetched successfully.";
+          action.payload?.message || "User details fetched successfully.";
       })
       .addCase(fetchUserDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message =
-          action.payload.message ||
+          action.payload?.message ||
           "Failed to fetch user details. Please try again.";
       });
   },

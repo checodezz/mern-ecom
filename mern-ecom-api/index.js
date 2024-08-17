@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const connectDB = require("./config/db");
 const userRouter = require("./routes/userRoutes.js");
+const adminRouter = require("./routes/adminRoutes.js");
 
 const app = express();
 const corsOptions = {
@@ -15,6 +16,7 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.use("/api", userRouter);
+app.use("/api", adminRouter);
 
 const PORT = 8080 || process.env.PORT;
 

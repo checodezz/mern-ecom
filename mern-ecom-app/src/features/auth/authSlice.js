@@ -1,21 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const domain = "http://localhost:8080/api";
-
-// Define user roles (if needed for your logic)
-const ROLE = {
-  ADMIN: "ADMIN",
-  GENERALUSER: "GENERALUSER",
-};
+import API_DOMAIN from "../../config";
 
 // Handle signup action
 export const signupAsync = createAsyncThunk(
   "auth/signup",
   async (newUserData, thunkAPI) => {
     try {
-      const response = await axios.post(`${domain}/signup`, newUserData);
-      localStorage.setItem("token", response.data.token);
+      const response = await axios.post(`${API_DOMAIN}/signup`, newUserData);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -28,10 +22,9 @@ export const signinAsync = createAsyncThunk(
   "auth/signin",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`${domain}/signin`, formData, {
+      const response = await axios.post(`${API_DOMAIN}/signin`, formData, {
         withCredentials: true,
       });
-      localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error) {
       // console.log("Error during signin:", error.response);
@@ -49,10 +42,9 @@ export const logoutAsync = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`${domain}/logout`, {
+      const response = await axios.get(`${API_DOMAIN}/logout`, {
         withCredentials: true,
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -63,7 +55,6 @@ export const logoutAsync = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: localStorage.getItem("token") || null,
     isLoading: false,
     isError: false,
     isSuccess: false,
@@ -85,7 +76,6 @@ const authSlice = createSlice({
       .addCase(signupAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.token = action.payload.token;
         state.message = action.payload.message || "Signup successful!";
       })
       .addCase(signupAsync.rejected, (state, action) => {
@@ -101,7 +91,6 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.token = action.payload.token;
         state.message = action.payload.message || "Signin successful!";
       })
       .addCase(signinAsync.rejected, (state, action) => {

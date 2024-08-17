@@ -14,8 +14,9 @@ body {
 
 main {
   padding-top: 60px; /* Height of the header */
-  background-color: rgb(243, 243, 243);
-  min-height: calc(100vh - 80px);
+  padding-bottom: 2px;
+  background-color: rgb(251, 251, 251);
+  min-height: calc(100vh - 70px);
 }
 
 /* Colors */
@@ -70,4 +71,51 @@ main {
 /* cursor pointer */
 .cursor-pointer {
   cursor: pointer;
+}
+
+/* login and signup */
+#login .hidePasswordBtn,
+#sign-up .hidePasswordBtn {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+#sign-up .upload-photo {
+  position: absolute;
+  top: 40px;
+  font-size: 15px;
+  opacity: 80;
+}
+
+/* admin panel */
+.custom-shadow {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  position: relative;
+}
+
+.hover-bg-slate-200:hover {
+  background-color: rgb(243, 243, 243);
+}
+
+/* all users */
+.user-table {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.user-table th,
+.user-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.user-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.user-table td {
+  padding: 14px;
 }

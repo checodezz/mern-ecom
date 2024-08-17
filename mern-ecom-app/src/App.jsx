@@ -54,7 +54,7 @@ const App = () => {
     <>
       <ToastContainer />
       <Header />
-      <main className="container-fluid px-4 my-4">
+      <main>
         <Outlet />
       </main>
       <Footer />

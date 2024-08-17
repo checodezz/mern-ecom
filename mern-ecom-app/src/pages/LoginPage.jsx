@@ -1,10 +1,9 @@
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import loginIcon from "../../assets/signin.gif";
-import "./auth.css";
+import loginIcon from "../assets/signin.gif";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { resetState, signinAsync } from "./authSlice";
+import { resetState, signinAsync } from "../features/auth/authSlice";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,12 +37,15 @@ const LoginPage = () => {
   };
 
   return (
-    <section id="login">
-      <div className="bg-white px-2 py-4 w-50 mx-auto">
+    <section id="login" className="my-5 d-flex justify-content-center">
+      <div
+        className="bg-white p-4 w-100 shadow-sm"
+        style={{ maxWidth: "400px" }}
+      >
         <div className="d-flex justify-content-center align-items-center">
           <img
             src={loginIcon}
-            className="rounded-circle"
+            className="img-fluid rounded-circle"
             alt="Login Icon"
             width="100px"
             height="100px"
@@ -84,15 +86,21 @@ const LoginPage = () => {
               </div>
             </div>
           </div>
-          <Link to={"/forgot-password"} className="d-flex justify-content-end ">
+          <Link
+            to={"/forgot-password"}
+            className="d-flex justify-content-end text-decoration-none "
+          >
             Forgot Password ?
           </Link>
-          <button className="btn btn-pink mt-2 mb-4 w-50 rounded-pill mx-auto d-flex justify-content-center align-items-center">
+          <button className="btn btn-pink mt-2 mb-4 w-100 rounded-pill ">
             Login
           </button>
         </form>
         <p>
-          Don&apos;t have account ? <Link to={"/sign-up"}>Sign Up</Link>
+          Don&apos;t have account ?{" "}
+          <Link to={"/sign-up"} className="text-decoration-none">
+            Sign Up
+          </Link>
         </p>
       </div>
     </section>
