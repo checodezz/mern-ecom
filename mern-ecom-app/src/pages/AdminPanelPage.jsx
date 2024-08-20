@@ -4,6 +4,8 @@ import { FaRegCircleUser } from "react-icons/fa6";
 
 const AdminPanelPage = () => {
   const user = useSelector((state) => state.user.user);
+  // console.log(user);
+
   return (
     <div className="d-flex min-h" style={{ minHeight: "calc(100vh - 100px)" }}>
       <aside

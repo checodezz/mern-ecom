@@ -35,7 +35,6 @@ const adminSlice = createSlice({
   name: "admin",
   initialState: {
     allUsers: [],
-    role: null,
     isLoading: false,
     isSuccess: false,
     isError: false,

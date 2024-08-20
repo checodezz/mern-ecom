@@ -1,11 +1,33 @@
 import { ROLE } from "../../config";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateUser } from "./adminSlice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllUsers, updateUser } from "./adminSlice";
+import { toast } from "react-toastify";
 
-const ChangeUserRole = ({ name, email, role }) => {
+const ChangeUserRole = ({ userId, name, email, role }) => {
   const [changeRole, setChangeRole] = useState(role);
   const dispatch = useDispatch();
+  const { message, isSuccess, isError } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(message);
+      fetchAllUsers();
+    } else if (isError) {
+      toast.error(message);
+    }
+  }, [dispatch, message, isSuccess, isError]);
+
+  const handleChangeRole = () => {
+    const updatedUserData = {
+      userId,
+      name,
+      email,
+      role: changeRole,
+    };
+
+    dispatch(updateUser(updatedUserData));
+  };
 
   return (
     <div
@@ -39,6 +61,7 @@ const ChangeUserRole = ({ name, email, role }) => {
                 className="form-select pt-0 mt-0 ms-2"
                 style={{ width: "300px" }}
                 onChange={(e) => setChangeRole(e.target.value)}
+                value={changeRole}
               >
                 <option value="">Select Role</option>
                 {Object.values(ROLE).map((el) => (
@@ -54,7 +77,7 @@ const ChangeUserRole = ({ name, email, role }) => {
               type="button"
               className="btn btn-primary"
               data-bs-dismiss="modal"
-              onClick={() => dispatch(updateUser())}
+              onClick={() => handleChangeRole()}
             >
               Change Role
             </button>

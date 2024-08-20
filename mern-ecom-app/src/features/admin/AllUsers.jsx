@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchAllUsers } from "./adminSlice";
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -10,6 +10,7 @@ const AllUsers = () => {
   const dispatch = useDispatch();
   const allUsers = useSelector((state) => state.admin.allUsers);
   const { message, isError } = useSelector((state) => state.admin);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     dispatch(fetchAllUsers());
@@ -47,6 +48,7 @@ const AllUsers = () => {
                   className="bg-lightgreen p-2 rounded-circle btn"
                   data-bs-toggle="modal"
                   data-bs-target="#staticBackdrop"
+                  onClick={() => setSelectedUser(user)}
                 >
                   <MdModeEdit />
                 </button>
@@ -55,7 +57,12 @@ const AllUsers = () => {
           ))}
         </tbody>
       </table>
-      <ChangeUserRole />
+      <ChangeUserRole
+        userId={selectedUser?._id}
+        name={selectedUser?.name}
+        email={selectedUser?.email}
+        role={selectedUser?.role}
+      />
     </div>
   );
 };

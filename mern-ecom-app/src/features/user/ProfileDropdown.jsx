@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { logoutAsync } from "../auth/authSlice";
 import { fetchUserDetails } from "./userSlice";
+import { ROLE } from "../../config";
 
 const ProfileDropdown = () => {
   const dispatch = useDispatch();
@@ -40,9 +41,11 @@ const ProfileDropdown = () => {
           </Link>
           <ul className="dropdown-menu">
             <li>
-              <Link className="dropdown-item" to="/admin-panel">
-                Admin Panel
-              </Link>
+              {user?.role === ROLE.ADMIN && (
+                <Link className="dropdown-item" to="/admin-panel">
+                  Admin Panel
+                </Link>
+              )}
             </li>
 
             <li>
