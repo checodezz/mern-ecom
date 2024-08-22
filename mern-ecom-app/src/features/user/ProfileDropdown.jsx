@@ -42,7 +42,7 @@ const ProfileDropdown = () => {
           <ul className="dropdown-menu">
             <li>
               {user?.role === ROLE.ADMIN && (
-                <Link className="dropdown-item" to="/admin-panel">
+                <Link className="dropdown-item" to="/admin-panel/all-products">
                   Admin Panel
                 </Link>
               )}

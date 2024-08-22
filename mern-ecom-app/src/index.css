@@ -17,6 +17,8 @@ main {
   padding-bottom: 2px;
   background-color: rgb(251, 251, 251);
   min-height: calc(100vh - 70px);
+  overflow: auto;
+  scrollbar-width: none;
 }
 
 /* Colors */
@@ -114,4 +116,13 @@ main {
 .user-table th {
   background-color: #f8f9fa;
   font-weight: bold;
+}
+
+/* full size image viewer */
+.delete-icon {
+  display: none;
+}
+
+.position-relative:hover .delete-icon {
+  display: block;
 }

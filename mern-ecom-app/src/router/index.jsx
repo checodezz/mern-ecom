@@ -5,8 +5,9 @@ import LoginPage from "../pages/LoginPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import SignUpPage from "../pages/SignUpPage";
 import AdminPanelPage from "../pages/AdminPanelPage";
-import AllUsers from "../features/admin/AllUsers";
-import AllProducts from "../features/admin/AllProducts";
+import AllUsers from "../features/admin/AllUsersPage";
+import AllProducts from "../features/admin/AllProductsPage";
+import AllCategoriesPage from "../features/admin/AllCategoriesPage";
 
 const routes = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const routes = createBrowserRouter([
             path: "all-products",
             element: <AllProducts />,
           },
+          {
+            path: "all-categories",
+            element: <AllCategoriesPage/>
+          }
         ],
       },
     ],

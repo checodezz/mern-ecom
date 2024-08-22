@@ -57,6 +57,14 @@ const AdminPanelPage = () => {
                 All Products
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link text-decoration-none hover-bg-slate-200 px-4"
+                to={"all-categories"}
+              >
+                All Categories
+              </Link>
+            </li>
           </ul>
         </nav>
       </aside>
