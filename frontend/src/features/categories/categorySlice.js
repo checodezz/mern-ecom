@@ -15,7 +15,7 @@ export const fetchAllCategories = createAsyncThunk(
   }
 );
 
-// add categoory
+// add category
 export const addCategory = createAsyncThunk(
   "categories/add-category",
   async (newCategory, thunkAPI) => {
@@ -72,10 +72,26 @@ export const deleteCategory = createAsyncThunk(
   }
 );
 
+// fetch subcategories with product
+export const fetchAllSubCategoriesWithProduct = createAsyncThunk(
+  "categories/get-subcategories",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${API_DOMAIN}/get-subcategories-products`
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const categorySlice = createSlice({
   name: "categories",
   initialState: {
     categories: [],
+    subCategoriesWithProducts: [],
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -145,6 +161,20 @@ const categorySlice = createSlice({
           action.payload?.message || "Category deleted successfully.";
       })
       .addCase(deleteCategory.rejected, (state, action) => {
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload?.message;
+      })
+      .addCase(fetchAllSubCategoriesWithProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllSubCategoriesWithProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.subCategoriesWithProducts = action.payload.data;
+        state.message = action.payload?.message;
+      })
+      .addCase(fetchAllSubCategoriesWithProduct.rejected, (state, action) => {
         state.isSuccess = false;
         state.isError = true;
         state.message = action.payload?.message;

@@ -1,7 +1,7 @@
 import ProductFilterForm from "../features/products/ProductFilterForm";
 import ProductList from "../features/products/ProductList";
 
-const ProductDisplayPage = () => {
+const ProductsDisplayPage = () => {
   return (
     <div className="d-flex min-h" style={{ minHeight: "calc(100vh - 100px)" }}>
       <aside
@@ -17,4 +17,4 @@ const ProductDisplayPage = () => {
   );
 };
 
-export default ProductDisplayPage;
+export default ProductsDisplayPage;

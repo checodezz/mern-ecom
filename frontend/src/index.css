@@ -15,7 +15,7 @@ body {
 main {
   padding-top: 60px; /* Height of the header */
   padding-bottom: 2px;
-  background-color: rgb(251, 251, 251);
+  background-color: #e2e8f0;
   min-height: calc(100vh - 70px);
   overflow: auto;
 }
@@ -32,6 +32,10 @@ main {
 
 .bg-lightgreen {
   background-color: #e5f7ee;
+}
+
+.bg-slate-200 {
+  background-color: #e2e8f0;
 }
 
 .bg-lightgrey {
@@ -70,13 +74,14 @@ main {
   cursor: pointer;
 }
 
-/* scrollbar gidden */
-.scrollbar-hidden {
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.scrollbar-none::-webkit-scrollbar {
   display: none;
 }
 
-.scrollbar-hidden::-webkit-scrollbar {
-  display: none;
+/* Hide scrollbar for Firefox */
+.scroll-width-thin {
+  scrollbar-width: none;
 }
 
 /* login and signup */
@@ -128,5 +133,53 @@ main {
 }
 
 .position-relative:hover .delete-icon {
+  display: block;
+}
+
+/* image  */
+.image-container {
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.product-image {
+  height: 100%;
+  object-fit: contain;
+  background-color: transparent;
+  mix-blend-mode: multiply;
+}
+
+/* loading components */
+.pulse-animation {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f5f5f5;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}
+
+.bg-lightgrey {
+  background-color: "#e0e0e0";
+}
+
+/* horizontal-card-products */
+.left-arrow-icon,
+.right-arrow-icon {
+  display: none;
+}
+
+.slider-products:hover .left-arrow-icon,
+.slider-products:hover .right-arrow-icon {
   display: block;
 }

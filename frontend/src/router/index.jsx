@@ -8,7 +8,8 @@ import AdminPanelPage from "../pages/AdminPanelPage";
 import AllUsers from "../features/admin/AllUsersPage";
 import AllProducts from "../features/admin/AllProductsPage";
 import AllCategoriesPage from "../features/admin/AllCategoriesPage";
-import ProductDisplayPage from "../pages/ProductDisplayPage";
+import ProductsDisplayPage from "../pages/ProductsDisplayPage";
+import ProductDetailsPage from "../pages/ProductDetailsPage";
 
 const routes = createBrowserRouter([
   {
@@ -51,7 +52,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "products",
-        element: <ProductDisplayPage />,
+        element: <ProductsDisplayPage />,
+      },
+      {
+        path: "product-details/:productId",
+        element: <ProductDetailsPage />,
       },
     ],
   },

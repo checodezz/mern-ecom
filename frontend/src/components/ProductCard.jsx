@@ -5,20 +5,23 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
   return (
-    <Link
-      className="text-decoration-none"
-      to={`/product-details/${product?._id}`}
+    <div
+      className="card h-100 w-100"
+      style={{ minWidth: "100%", maxWidth: "15rem" }}
     >
-      <div
-        className="card h-100 w-100"
-        style={{ minWidth: "100%", maxWidth: "15rem" }}
+      <Link
+        className="text-decoration-none"
+        to={`/product-details/${product?._id}`}
       >
         <div
-          className="d-flex justify-content-center align-items-center mx-auto mt-3"
-          style={{ width: "13rem", height: "12rem" }}
+          className="image-container mx-auto mt-3"
+          style={{
+            width: "13rem",
+            height: "12rem",
+          }}
         >
           <img
-            className="img-fluid"
+            className="img-fluid product-image"
             src={product?.images[0]}
             alt={product?.name}
             style={{
@@ -104,8 +107,8 @@ const ProductCard = ({ product }) => {
             </Link>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

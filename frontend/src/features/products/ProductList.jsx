@@ -7,9 +7,9 @@ import { fetchFilteredProducts } from "./productSlice";
 import { useLocation } from "react-router-dom";
 
 const ProductList = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const category = queryParams.get("category");
+  const { category, subCategory } = Object.fromEntries(
+    new URLSearchParams(useLocation().search)
+  );
 
   const { filteredProducts, isLoading, isError, message } = useSelector(
     (state) => state.products
@@ -18,8 +18,8 @@ const ProductList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchFilteredProducts({ category }));
-  }, [dispatch, category]);
+    dispatch(fetchFilteredProducts({ category, subCategory }));
+  }, [dispatch, category, subCategory]);
 
   return (
     <div className="bg-light px-4 py-4 h-100 ">
@@ -35,7 +35,7 @@ const ProductList = () => {
       </p>
       {isLoading && <LoadingSpinner />}
       <div
-        className="row g-4 mt-1 overflow-y-scroll"
+        className="row g-4 mt-1 overflow-y-scroll scrollbar-none"
         style={{ height: "calc(100vh - 90px)" }}
       >
         {filteredProducts &&
