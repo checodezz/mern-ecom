@@ -1,23 +1,23 @@
 const productModel = require("../../models/productModel");
 
-const getCategoryNameWithProducts = async (req, res) => {
+const getSubCategoriesWithProducts = async (req, res) => {
   try {
     const categoryWithProducts = await productModel.distinct("subCategory");
 
-    const productByCategory = [];
+    const productBySubCategory = [];
     for (const subCategory of categoryWithProducts) {
       const product = await productModel.findOne({ subCategory });
 
       if (product) {
-        productByCategory.push(product);
+        productBySubCategory.push(product);
       }
     }
 
-    console.log(productByCategory);
+    // console.log(productBySubCategory);
 
     res.status(200).json({
-      message: "Category Product",
-      data: productByCategory,
+      message: "SubCategory Products",
+      data: productBySubCategory,
       success: true,
       error: false,
     });
@@ -30,4 +30,4 @@ const getCategoryNameWithProducts = async (req, res) => {
   }
 };
 
-module.exports = getCategoryNameWithProducts;
+module.exports = getSubCategoriesWithProducts;
