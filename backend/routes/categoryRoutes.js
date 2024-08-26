@@ -4,7 +4,7 @@ const addCategoryController = require("../controller/categories/addCategory");
 const updateCategoryController = require("../controller/categories/updateCategory");
 const authToken = require("../middleware/authToken");
 const deleteCategoryController = require("../controller/categories/deleteCategory");
-const getCategoryNameWithProducts = require("../controller/products/getCategoryNameWithProducts");
+const getSubCategoriesWithProducts = require("../controller/categories/getSubCategoriesWithProducts");
 const router = express.Router();
 
 router.get("/get-categories", getCategoriesController);
@@ -15,6 +15,6 @@ router.delete(
   authToken,
   deleteCategoryController
 );
-router.get("/get-category-products", getCategoryNameWithProducts);
+router.get("/get-subcategories-products", getSubCategoriesWithProducts);
 
 module.exports = router;
