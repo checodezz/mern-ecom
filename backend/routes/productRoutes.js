@@ -5,6 +5,8 @@ const getProductsController = require("../controller/products/getProducts");
 const updateProductController = require("../controller/products/updateProduct");
 const filterProductController = require("../controller/products/filterProduct");
 const getSubCategoryWiseProducts = require("../controller/products/getSubCategoryWiseProducts");
+const getProductDetails = require("../controller/products/getProductDetails");
+
 const router = express.Router();
 
 // authToken for to use this route only for admin
@@ -18,5 +20,8 @@ router.get("/products", filterProductController);
 
 // subCategory wise products
 router.post("/subCategory-products", getSubCategoryWiseProducts);
+
+// product details
+router.post("/product-details", getProductDetails);
 
 module.exports = router;

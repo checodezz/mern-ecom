@@ -3,9 +3,13 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { displayINRCurrency } from "../utils/helpers";
-import { fecthSubCategoryWiseProducts } from "../features/products/productSlice";
+import {
+  clearSubCategoryWiseProducts,
+  fetchSubCategoryWiseProducts,
+} from "../features/products/productSlice";
 import { makeSelectProductsBySubCategory } from "../features/products/productSelector";
 import HorizontalCardProductsLoader from "./HorizontalCardProductsLoader";
+import { addProductToCart } from "../features/cart/cartSlice";
 
 const HorizontalCardProducts = ({ subCategory, heading }) => {
   const dispatch = useDispatch();
@@ -17,7 +21,13 @@ const HorizontalCardProducts = ({ subCategory, heading }) => {
   const isLoading = useSelector((state) => state.products.isLoading);
 
   useEffect(() => {
-    dispatch(fecthSubCategoryWiseProducts({ subCategory }));
+    dispatch(fetchSubCategoryWiseProducts({ subCategory }));
+  }, [dispatch, subCategory]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearSubCategoryWiseProducts());
+    };
   }, [dispatch, subCategory]);
 
   const scrollElement = useRef();
@@ -28,6 +38,12 @@ const HorizontalCardProducts = ({ subCategory, heading }) => {
 
   const scrollLeft = () => {
     scrollElement.current.scrollLeft -= 150;
+  };
+
+  const handleAddToCart = (e, productId) => {
+    e.stopPropagation();
+    e.preventDefault();
+    dispatch(addProductToCart(productId));
   };
 
   return (
@@ -57,13 +73,16 @@ const HorizontalCardProducts = ({ subCategory, heading }) => {
         {isLoading ? (
           <HorizontalCardProductsLoader />
         ) : (
-          subCategoryWiseProducts?.map((product) => (
+          subCategoryWiseProducts?.slice(0, 7).map((product) => (
             <div
               className="card h-100 me-3 "
               key={product?._id}
               style={{ width: "300px", flexShrink: 0 }}
             >
-              <Link className="text-decoration-none text-dark">
+              <Link
+                className="text-decoration-none text-dark"
+                to={`/products/${product._id}`}
+              >
                 <div className="row g-0 mb-0 pb-0">
                   <div className="col-md-5 bg-secondary-subtle d-flex justify-content-center align-items-center">
                     <img
@@ -91,7 +110,10 @@ const HorizontalCardProducts = ({ subCategory, heading }) => {
                           {displayINRCurrency(product?.price)}
                         </p>
                       </div>
-                      <button className="btn btn-danger rounded-pill w-100 btn-sm">
+                      <button
+                        className="btn btn-danger rounded-pill w-100 btn-sm"
+                        onClick={(e) => handleAddToCart(e, product._id)}
+                      >
                         Add to Cart
                       </button>
                     </div>

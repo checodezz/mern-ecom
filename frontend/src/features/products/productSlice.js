@@ -36,14 +36,28 @@ export const fetchFilteredProducts = createAsyncThunk(
   }
 );
 
-export const fecthSubCategoryWiseProducts = createAsyncThunk(
+export const fetchSubCategoryWiseProducts = createAsyncThunk(
   "products/subCategory-products",
-  async (subCategory, thunkAPI) => {
+  async ({ subCategory }, thunkAPI) => {
     try {
-      const response = await axios.post(
-        `${API_DOMAIN}/subCategory-products`,
-        subCategory
-      );
+      const response = await axios.post(`${API_DOMAIN}/subCategory-products`, {
+        subCategory,
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// product details
+export const fetchProductDetails = createAsyncThunk(
+  "products/product-details",
+  async (productId, thunkAPI) => {
+    try {
+      const response = await axios.post(`${API_DOMAIN}/product-details`, {
+        productId,
+      });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -57,6 +71,8 @@ const productSlice = createSlice({
     products: [],
     filteredProducts: [],
     subCategoryWiseProducts: {},
+    productDetails: {},
+    productDetailsActiveImage: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -71,6 +87,9 @@ const productSlice = createSlice({
     },
     clearSubCategoryWiseProducts: (state) => {
       state.subCategoryWiseProducts = {};
+    },
+    setProductDetailsActiveImage: (state, action) => {
+      state.productDetailsActiveImage = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -102,23 +121,38 @@ const productSlice = createSlice({
         state.isError = true;
         state.message = action.payload?.message;
       })
-      .addCase(fecthSubCategoryWiseProducts.pending, (state, action) => {
+      .addCase(fetchSubCategoryWiseProducts.pending, (state, action) => {
         state.isLoading = true;
         state.subCategoryWiseProducts[action.meta.arg.subCategory] = [];
       })
-      .addCase(fecthSubCategoryWiseProducts.fulfilled, (state, action) => {
+      .addCase(fetchSubCategoryWiseProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.subCategoryWiseProducts[action.meta.arg.subCategory] =
           action.payload.data;
       })
-      .addCase(fecthSubCategoryWiseProducts.rejected, (state, action) => {
+      .addCase(fetchSubCategoryWiseProducts.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload?.message;
+      })
+      .addCase(fetchProductDetails.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProductDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.productDetails = action.payload.data;
+      })
+      .addCase(fetchProductDetails.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload?.message;
       });
   },
 });
 
-export const { resetState, clearSubCategoryWiseProducts } =
-  productSlice.actions;
+export const {
+  resetState,
+  clearSubCategoryWiseProducts,
+  setProductDetailsActiveImage,
+} = productSlice.actions;
 export const productReducer = productSlice.reducer;

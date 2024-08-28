@@ -31,7 +31,7 @@ main {
 }
 
 .bg-lightgreen {
-  background-color: #e5f7ee;
+  background-color: #c9fde3;
 }
 
 .bg-slate-200 {
@@ -142,7 +142,6 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
 }
 
 .product-image {
@@ -182,4 +181,78 @@ main {
 .slider-products:hover .left-arrow-icon,
 .slider-products:hover .right-arrow-icon {
   display: block;
+}
+
+/* product details image */
+.image-list-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-thumbnail {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.image-thumbnail-container {
+  position: relative;
+  height: 5rem;
+  width: 5rem;
+  margin-bottom: 0.5rem; /* Adjust spacing as needed */
+}
+
+.image-thumbnail-container:hover .image-preview {
+  opacity: 1;
+}
+
+.image-preview {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.image-preview img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+/* Apply flex-column layout for image thumbnails on XS screens */
+@media (max-width: 576px) {
+  .image-container {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .me-3 {
+    margin-right: 0;
+  }
+
+  /* Ensure that the image list and main image are stacked */
+  .image-list-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .main-image-container {
+    width: 100%;
+    height: auto;
+    margin-top: 1rem;
+  }
+
+  .product-zoom-image {
+    display: none;
+  }
 }
