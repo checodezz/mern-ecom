@@ -12,7 +12,7 @@ const VarticalCardProductsLoader = () => {
           style={{ height: "12rem" }}
         >
           <div
-            className="pulse-animation bg-lightgrey rounded-start"
+            className="pulse-animation bg-lightgrey product-image"
             style={{
               width: "100%",
               height: "100%",

@@ -24,13 +24,13 @@ const HomePage = () => {
       />
 
       <VerticalCardProducts
-        subCategory={"refrigerators"}
-        heading={"Trending REfrigrators"}
+        subCategory={"televisions"}
+        heading={"Trending Televisions"}
       />
 
       <VerticalCardProducts
-        subCategory={"televisions"}
-        heading={"Trending Televisions"}
+        subCategory={"clothing"}
+        heading={"Trending in clothing"}
       />
     </div>
   );

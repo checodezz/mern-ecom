@@ -41,11 +41,7 @@ const ProductList = () => {
         {filteredProducts &&
           filteredProducts?.map((product) => {
             return (
-              <div
-                className="col-xl-3 col-lg-4 col-md-6  "
-                key={product?._id}
-                style={{ height: "calc(60vh - 30px)" }}
-              >
+              <div className="col-xl-3 col-lg-4 col-md-6  " key={product?._id}>
                 <ProductCard product={product} />
               </div>
             );
