@@ -8,19 +8,19 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDetails } from "./features/user/userSlice";
 import { toast } from "react-toastify";
-import { resetState } from "./features/auth/authSlice";
+import { authResetState } from "./features/auth/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { message, isSuccess, isError } = useSelector((state) => state.auth);
+
   const [shouldReload, setShouldReload] = useState(false);
 
   useEffect(() => {
     if (isSuccess) {
       toast.success(message, {
         autoClose: 2000,
-        position: "bottom-right",
         onClose: () => {
           setShouldReload(true);
         },
@@ -28,21 +28,20 @@ const App = () => {
     } else if (isError) {
       toast.error(message, {
         autoClose: 2000,
-        position: "bottom-right",
         onOpen: () => {
           setShouldReload(false);
         },
       });
     }
-    dispatch(resetState());
+    dispatch(authResetState());
   }, [isSuccess, isError, message, dispatch, navigate]);
 
   useEffect(() => {
     if (shouldReload) {
       setTimeout(() => {
         window.location.reload();
-        setShouldReload(false); // Reset flag after reloading
-      }, 200); // Match the autoClose duration
+        setShouldReload(false);
+      }, 200);
     }
   }, [shouldReload]);
 

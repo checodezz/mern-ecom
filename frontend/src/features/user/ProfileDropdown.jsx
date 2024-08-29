@@ -71,7 +71,7 @@ const ProfileDropdown = () => {
           </ul>
         </div>
       ) : (
-        <Link className="btn btn-pink fw-semibold" to="/login">
+        <Link className="btn btn-pink fw-semibold w-100" to="/login">
           Login
         </Link>
       )}

@@ -10,6 +10,7 @@ import AllProducts from "../features/admin/AllProductsPage";
 import AllCategoriesPage from "../features/admin/AllCategoriesPage";
 import ProductsDisplayPage from "../pages/ProductsDisplayPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage";
+import CartPage from "../pages/CartPage";
 
 const routes = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const routes = createBrowserRouter([
       {
         path: "products/:productId",
         element: <ProductDetailsPage />,
+      },
+      {
+        path: "cart",
+        element: <CartPage />,
       },
     ],
   },

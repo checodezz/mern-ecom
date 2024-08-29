@@ -4,7 +4,7 @@ import loginIcon from "../assets/signin.gif";
 import { useEffect, useState } from "react";
 import { imageToBase64 } from "../utils/helpers";
 import { useDispatch, useSelector } from "react-redux";
-import { resetState, signupAsync } from "../features/auth/authSlice";
+import { authResetState, signupAsync } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 
 const SignUpPage = () => {
@@ -26,7 +26,7 @@ const SignUpPage = () => {
     if (isSuccess) {
       navigate("/login");
     }
-    dispatch(resetState());
+    dispatch(authResetState());
   }, [isSuccess, isError, message, navigate, dispatch]);
 
   const changeHandler = (event) => {
