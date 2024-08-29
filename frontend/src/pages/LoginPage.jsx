@@ -3,7 +3,7 @@ import loginIcon from "../assets/signin.gif";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { resetState, signinAsync } from "../features/auth/authSlice";
+import { authResetState, signinAsync } from "../features/auth/authSlice";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +20,7 @@ const LoginPage = () => {
       navigate("/");
     }
 
-    dispatch(resetState());
+    dispatch(authResetState());
   }, [isSuccess, isError, message, dispatch, navigate]);
 
   const changeHandler = (event) => {

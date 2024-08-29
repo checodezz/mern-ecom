@@ -2,25 +2,29 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+
 const connectDB = require("./config/db");
 const userRouter = require("./routes/userRoutes.js");
 const adminRouter = require("./routes/adminRoutes.js");
-const productRouter = require("./routes/productRoutes.js")
-const categoryRouter = require("./routes/categoryRoutes.js")
+const productRouter = require("./routes/productRoutes.js");
+const categoryRouter = require("./routes/categoryRoutes.js");
+const cartRouter = require("./routes/cartRoutes.js");
 
 const app = express();
 const corsOptions = {
-  origin: process.env.FRONTEND_URL,
+  origin: ["http://localhost:5173", "https://arp-mern-ecom.netlify.app"],
   credentials: true,
 };
+
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.use("/api", userRouter);
 app.use("/api", adminRouter);
-app.use("/api", productRouter)
-app.use("/api", categoryRouter)
+app.use("/api", productRouter);
+app.use("/api", categoryRouter);
+app.use("/api", cartRouter);
 
 const PORT = 8080 || process.env.PORT;
 

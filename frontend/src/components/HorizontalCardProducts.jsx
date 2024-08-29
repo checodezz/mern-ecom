@@ -9,7 +9,7 @@ import {
 } from "../features/products/productSlice";
 import { makeSelectProductsBySubCategory } from "../features/products/productSelector";
 import HorizontalCardProductsLoader from "./HorizontalCardProductsLoader";
-import { addProductToCart } from "../features/cart/cartSlice";
+import { addItemToCart, getCountCartItems } from "../features/cart/cartSlice";
 
 const HorizontalCardProducts = ({ subCategory, heading }) => {
   const dispatch = useDispatch();
@@ -43,7 +43,9 @@ const HorizontalCardProducts = ({ subCategory, heading }) => {
   const handleAddToCart = (e, productId) => {
     e.stopPropagation();
     e.preventDefault();
-    dispatch(addProductToCart(productId));
+    dispatch(addItemToCart(productId)).then(() => {
+      dispatch(getCountCartItems());
+    });
   };
 
   return (

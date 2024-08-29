@@ -2,8 +2,34 @@ import { Link } from "react-router-dom";
 import { TbHeart, TbHeartFilled, TbHeartPlus } from "react-icons/tb";
 import ReactStars from "react-rating-stars-component";
 import { calculateDiscount, displayINRCurrency } from "../../../utils/helpers";
+import { useDispatch, useSelector } from "react-redux";
+import { addItemToCart, getCountCartItems } from "../../cart/cartSlice";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const ProductInfo = ({ product, isLoading }) => {
+  const dispatch = useDispatch();
+  const { message, isSuccess, isError } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(message, {
+        toastId: "success",
+      });
+    } else if (isError) {
+      toast.error(message, {
+        toastId: "error",
+      });
+    }
+  }, [message, isSuccess, isError]);
+
+  const handleAddToCart = (e, productId) => {
+    e.preventDefault();
+    dispatch(addItemToCart(productId)).then(() => {
+      dispatch(getCountCartItems());
+    });
+  };
+
   return (
     <>
       {isLoading ? (
@@ -108,6 +134,7 @@ const ProductInfo = ({ product, isLoading }) => {
             <Link
               className="btn btn-pink center-content rounded-0 fw-semibold w-100"
               style={{ minWidth: "300px", height: "48px" }}
+              onClick={(e) => handleAddToCart(e, product?._id)}
             >
               Add to Cart
             </Link>

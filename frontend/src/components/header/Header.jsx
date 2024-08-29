@@ -5,8 +5,19 @@ import { GrSearch } from "react-icons/gr";
 import { Link } from "react-router-dom";
 import ProfileDropdown from "../../features/user/ProfileDropdown";
 import CategoryList from "../../features/categories/CategoryList";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getCountCartItems } from "../../features/cart/cartSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const totalCartItems = useSelector((state) => state.cart.totalCartItems);
+  const user = useSelector((state) => state?.user?.user);
+
+  useEffect(() => {
+    dispatch(getCountCartItems());
+  }, [dispatch]);
+
   return (
     <header className="px-3">
       <nav className="navbar navbar-expand-lg">
@@ -44,22 +55,30 @@ const Header = () => {
             </div>
             <div className="d-flex col-md-3 col-3 justify-content-around align-items-center">
               <ProfileDropdown />
-              <Link
-                className="text-dark position-relative"
-                style={{ paddingLeft: "20px", paddingRight: "20px" }}
-              >
-                <FaRegHeart size={25} />
-                <span className="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-pink">
-                  0
-                </span>
-              </Link>
 
-              <Link className="text-dark position-relative text-decoration-none d-flex">
-                <FaShoppingCart size={25} />
-                <span className="position-absolute top-0 start-100 translate-middle  badge rounded-pill bg-pink">
-                  0
-                </span>
-              </Link>
+              {user && (
+                <>
+                  <Link
+                    className="text-dark position-relative"
+                    style={{ paddingLeft: "20px", paddingRight: "20px" }}
+                    to="/wishlist"
+                  >
+                    <FaRegHeart size={25} />
+                    <span className="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-pink">
+                      0
+                    </span>
+                  </Link>
+                  <Link
+                    className="text-dark position-relative text-decoration-none d-flex"
+                    to="/cart"
+                  >
+                    <FaShoppingCart size={25} />
+                    <span className="position-absolute top-0 start-100 translate-middle  badge rounded-pill bg-pink">
+                      {totalCartItems ? totalCartItems : 0}
+                    </span>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

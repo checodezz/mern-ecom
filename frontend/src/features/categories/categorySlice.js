@@ -98,7 +98,7 @@ const categorySlice = createSlice({
     message: null,
   },
   reducers: {
-    resetState: (state) => {
+    categoryResetState: (state) => {
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = false;
@@ -182,5 +182,5 @@ const categorySlice = createSlice({
   },
 });
 
-export const { resetState } = categorySlice.actions;
+export const { categoryResetState } = categorySlice.actions;
 export const categoryReducer = categorySlice.reducer;

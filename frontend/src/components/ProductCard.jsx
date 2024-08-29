@@ -3,8 +3,43 @@ import { calculateDiscount, displayINRCurrency } from "../utils/helpers";
 import ReactStars from "react-rating-stars-component";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import ProductCardLoader from "./ProductCardLoader";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItemToCart,
+  cartResetState,
+  getCountCartItems,
+} from "../features/cart/cartSlice";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const ProductCard = ({ product, isLoading }) => {
+  const dispatch = useDispatch();
+
+  const { message, isSuccess, isError } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(message, {
+        toastId: "success",
+      });
+    } else if (isError) {
+      toast.error(message, {
+        toastId: "error",
+      });
+    }
+  }, [message, isSuccess, isError]);
+
+  useEffect(() => {
+    dispatch(cartResetState());
+  }, [dispatch, isSuccess, isError]);
+
+  const handleAddToCart = (e, productId) => {
+    e.stopPropagation();
+    e.preventDefault();
+    dispatch(addItemToCart(productId)).then(() => {
+      dispatch(getCountCartItems());
+    });
+  };
   return (
     <>
       {isLoading ? (
@@ -108,6 +143,7 @@ const ProductCard = ({ product, isLoading }) => {
                 <Link
                   type="button"
                   className="btn text-light text-decoration-none fw-semibold"
+                  onClick={(e) => handleAddToCart(e, product?._id)}
                 >
                   Add to Cart
                 </Link>

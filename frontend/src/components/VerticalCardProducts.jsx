@@ -6,7 +6,7 @@ import { displayINRCurrency } from "../utils/helpers";
 import { fetchSubCategoryWiseProducts } from "../features/products/productSlice";
 import { makeSelectProductsBySubCategory } from "../features/products/productSelector";
 import VerticalCardProductsLoader from "./VerticalCardProductsLoader";
-import { addProductToCart } from "../features/cart/cartSlice";
+import { addItemToCart, getCountCartItems } from "../features/cart/cartSlice";
 
 const VerticalCardProducts = ({ subCategory, heading }) => {
   const dispatch = useDispatch();
@@ -35,7 +35,9 @@ const VerticalCardProducts = ({ subCategory, heading }) => {
   const handleAddToCart = (e, productId) => {
     e.stopPropagation();
     e.preventDefault();
-    dispatch(addProductToCart(productId));
+    dispatch(addItemToCart(productId)).then(() => {
+      dispatch(getCountCartItems());
+    });
   };
 
   return (

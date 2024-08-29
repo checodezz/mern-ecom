@@ -79,7 +79,7 @@ const productSlice = createSlice({
     message: null,
   },
   reducers: {
-    resetState: (state) => {
+    productResetState: (state) => {
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = false;
@@ -151,7 +151,7 @@ const productSlice = createSlice({
 });
 
 export const {
-  resetState,
+  productResetState,
   clearSubCategoryWiseProducts,
   setProductDetailsActiveImage,
 } = productSlice.actions;
