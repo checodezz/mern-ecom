@@ -15,7 +15,9 @@ const HomePage = () => {
     if (isSuccess) {
       toast.success(message);
     } else if (isError) {
-      toast.error(message);
+      toast.error(message, {
+        style: { backgroundColor: "#F44336", color: "white" },
+      });
     }
     dispatch(cartResetState());
   }, [message, isSuccess, isError, dispatch]);

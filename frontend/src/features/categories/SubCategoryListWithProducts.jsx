@@ -4,7 +4,6 @@ import { fetchAllSubCategoriesWithProduct } from "./categorySlice";
 import { Link } from "react-router-dom";
 import { fetchFilteredProducts } from "../products/productSlice";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import LoadingSpinner from "../../components/LoadingSpinner";
 
 const SubCategoryListWithProducts = () => {
   const dispatch = useDispatch();

@@ -46,3 +46,17 @@ export const calculateDiscount = (price, sellingPrice) => {
   const discount = ((price - sellingPrice) / price) * 100;
   return discount.toFixed(0); // Returns the discount percentage rounded to 2 decimal places
 };
+
+export const calculateMinPrice = (products) => {
+  return products?.reduce(
+    (acc, curr) => (curr?.sellingPrice < acc ? curr?.sellingPrice : acc),
+    products[0]?.sellingPrice
+  );
+};
+
+export const calculateMaxPrice = (products) => {
+  return products?.reduce(
+    (acc, curr) => (curr?.sellingPrice > acc ? curr?.sellingPrice : acc),
+    products[0]?.sellingPrice
+  );
+};

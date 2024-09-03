@@ -75,7 +75,7 @@ const VerticalCardProducts = ({ subCategory, heading }) => {
             >
               <Link
                 className="text-decoration-none text-dark"
-                to={`/products/${product._id}`}
+                to={`/products/details/${product._id}`}
               >
                 <div
                   className="image-container col-12 py-3 bg-secondary-subtle d-flex justify-content-center align-items-center"

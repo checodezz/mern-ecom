@@ -2,14 +2,21 @@ const productModel = require("../../models/productModel");
 
 const filterProductController = async (req, res) => {
   try {
-    const { category, subCategory } = req?.query || req?.body;
+    const { category, subCategory, q } = req?.query || req?.body;
 
     const filter = {};
 
-    if (category) {
-      filter.category = category;
-    } else if (subCategory) {
-      filter.subCategory = subCategory;
+    // Apply filters
+    if (category) filter.category = category;
+    if (subCategory) filter.subCategory = subCategory;
+
+    // Handle search query with regex
+    if (q) {
+      filter.$or = [
+        { name: { $regex: q, $options: "i" } },
+        { category: { $regex: q, $options: "i" } },
+        { subCategory: { $regex: q, $options: "i" } },
+      ];
     }
 
     const products = await productModel.find(filter);
