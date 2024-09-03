@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCategories } from "./categorySlice";
 import { NavLink } from "react-router-dom";
-import { fetchFilteredProducts } from "../products/productSlice";
+import {
+  clearAllFilters,
+  fetchFilteredProducts,
+} from "../products/productSlice";
 
 const CategoryList = () => {
   const categories = useSelector((state) => state.categories.categories);
@@ -24,7 +27,10 @@ const CategoryList = () => {
             <NavLink
               className="nav-link text-black text-decoration-none "
               to={`/products?category=${category?.value}`}
-              onClick={() => dispatch(fetchFilteredProducts(category?.value))}
+              onClick={() => {
+                dispatch(fetchFilteredProducts(category?.value));
+                dispatch(clearAllFilters());
+              }}
             >
               {category?.label}
             </NavLink>

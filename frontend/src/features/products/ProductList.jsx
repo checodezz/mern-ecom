@@ -1,26 +1,7 @@
 import ProductCard from "../../components/ProductCard";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchFilteredProducts } from "./productSlice";
-import { useLocation } from "react-router-dom";
 
-const ProductList = () => {
-  const { category, subCategory } = Object.fromEntries(
-    new URLSearchParams(useLocation().search)
-  );
-
-  const { filteredProducts, isLoading, isError, message } = useSelector(
-    (state) => state.products
-  );
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchFilteredProducts({ category, subCategory }));
-  }, [dispatch, category, subCategory]);
-
+const ProductList = ({ filteredProducts, isLoading }) => {
   return (
     <div className="bg-light px-4 py-4 h-100 ">
       {" "}
@@ -36,12 +17,16 @@ const ProductList = () => {
       {isLoading && <LoadingSpinner />}
       <div
         className="row g-4 mt-1 overflow-y-scroll scrollbar-none"
-        style={{ height: "calc(100vh - 90px)" }}
+        style={{ height: "calc(100vh - (-100px))" }}
       >
         {filteredProducts &&
           filteredProducts?.map((product) => {
             return (
-              <div className="col-xl-3 col-lg-4 col-md-6  " key={product?._id}>
+              <div
+                className=" col-lg-4 col-md-6 "
+                key={product?._id}
+                // style={{ minHeight: "calc(100vh - 284px)" }}
+              >
                 <ProductCard product={product} />
               </div>
             );

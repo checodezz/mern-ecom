@@ -46,12 +46,15 @@ const ProductCard = ({ product, isLoading }) => {
         <ProductCardLoader />
       ) : (
         <div
-          className="card h-100 w-100"
-          style={{ minWidth: "100%", maxWidth: "15rem" }}
+          className="card w-100"
+          style={{
+            minWidth: "100%",
+            maxWidth: "15rem",
+          }}
         >
           <Link
             className="text-decoration-none text-black"
-            to={`/products/${product._id}`}
+            to={`/products/details/${product._id}`}
           >
             <div
               className="image-container mx-auto mt-3"

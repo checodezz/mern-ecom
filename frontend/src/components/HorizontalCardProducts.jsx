@@ -83,7 +83,7 @@ const HorizontalCardProducts = ({ subCategory, heading }) => {
             >
               <Link
                 className="text-decoration-none text-dark"
-                to={`/products/${product._id}`}
+                to={`/products/details/${product._id}`}
               >
                 <div className="row g-0 mb-0 pb-0">
                   <div className="col-md-5 bg-secondary-subtle d-flex justify-content-center align-items-center">

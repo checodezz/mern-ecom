@@ -1,6 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
+import { calculateMinPrice } from "../../utils/helpers";
 
 export const fetchAllProducts = createAsyncThunk(
   "products/get-products",
@@ -14,21 +15,25 @@ export const fetchAllProducts = createAsyncThunk(
   }
 );
 
+// filter products by category, subCategory and search query
 export const fetchFilteredProducts = createAsyncThunk(
   "products/fetch-filtered-products",
   async (params, thunkAPI) => {
     try {
-      const { category, subCategory } = params;
+      const { category, subCategory, q } = params;
       const query = new URLSearchParams();
 
       if (category) query.append("category", category);
       if (subCategory) query.append("subCategory", subCategory);
+      if (q) query.append("q", q);
 
-      console.log(`${API_DOMAIN}/products?${query.toString()}`);
+      // console.log("query:", query);
+      // console.log(`${API_DOMAIN}/products?${query?.toString()}`);
 
       const response = await axios.get(
         `${API_DOMAIN}/products?${query.toString()}`
       );
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -77,6 +82,14 @@ const productSlice = createSlice({
     isSuccess: false,
     isError: false,
     message: null,
+    filters: {
+      sortByPrice: "",
+      selectedCategories: [],
+      selectedSubCategories: [],
+      rating: "",
+      minPrice: 0,
+      maxPrice: 10000,
+    },
   },
   reducers: {
     productResetState: (state) => {
@@ -90,6 +103,64 @@ const productSlice = createSlice({
     },
     setProductDetailsActiveImage: (state, action) => {
       state.productDetailsActiveImage = action.payload;
+    },
+    setFiltersSortByPrice: (state, action) => {
+      const sortingMethod = action.payload;
+      state.filters.sortByPrice = sortingMethod;
+      const products = [...state.filteredProducts];
+      const sortedProducts = products.sort((a, b) =>
+        sortingMethod === "asc"
+          ? a.sellingPrice - b.sellingPrice
+          : b.sellingPrice - a.sellingPrice
+      );
+      state.filteredProducts = sortedProducts;
+    },
+    setFiltersSelectedCategories: (state, action) => {
+      const selectedCategories = action.payload;
+      state.filters.selectedCategories = selectedCategories;
+      if (selectedCategories.length > 0) {
+        const products = JSON.parse(JSON.stringify(state.products));
+        const filterProducts = products.filter((product) =>
+          selectedCategories.includes(product.category)
+        );
+        state.filteredProducts = filterProducts;
+      }
+    },
+
+    setFiltersRating: (state, action) => {
+      const selectedRating = action.payload;
+      state.filters.rating = selectedRating;
+      const products = JSON.parse(JSON.stringify(state.filteredProducts));
+      const filterProducts = products?.filter(
+        (product) => product.rating >= selectedRating
+      );
+      state.filteredProducts = filterProducts;
+    },
+    setMinMaxPrice: (state, action) => {
+      state.filters.minPrice = action.payload.minPrice;
+      state.filters.maxPrice = action.payload.maxPrice;
+      // console.log(state.filters.minPrice, state.filters.maxPrice);
+    },
+
+    setFiltersPrice: (state, action) => {
+      state.filters.minPrice = action.payload.minPrice;
+      state.filters.maxPrice = action.payload.maxPrice;
+      const products = JSON.parse(JSON.stringify(state.filteredProducts));
+      const filterProducts = products?.filter(
+        (product) =>
+          product.price >= state.filters.minPrice &&
+          product.price <= state.filters.maxPrice
+      );
+      state.filteredProducts = filterProducts;
+    },
+    clearAllFilters: (state) => {
+      state.filters = {
+        sortByPrice: "",
+        selectedCategories: [],
+        rating: "",
+        minPrice: "0",
+        maxPrice: "10000",
+      };
     },
   },
   extraReducers: (builder) => {
@@ -115,6 +186,7 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.filteredProducts = action.payload.data;
+        // console.log(state.filteredProducts);
       })
       .addCase(fetchFilteredProducts.rejected, (state, action) => {
         state.isLoading = false;
@@ -154,5 +226,11 @@ export const {
   productResetState,
   clearSubCategoryWiseProducts,
   setProductDetailsActiveImage,
+  setFiltersSortByPrice,
+  setFiltersSelectedCategories,
+  setFiltersRating,
+  setMinMaxPrice,
+  setFiltersPrice,
+  clearAllFilters,
 } = productSlice.actions;
 export const productReducer = productSlice.reducer;

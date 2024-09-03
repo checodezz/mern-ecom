@@ -25,7 +25,7 @@ export const addItemToCart = createAsyncThunk(
 
 export const getCountCartItems = createAsyncThunk(
   "cart/countCartItems",
-  async (productId, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/cart/count-items`, {
         withCredentials: true,
@@ -161,7 +161,7 @@ const cartSlice = createSlice({
       })
       .addCase(getCountCartItems.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.totalCartItems = action.payload.data.count;
+        state.totalCartItems = action.payload?.data?.count;
       })
       .addCase(getCountCartItems.rejected, (state) => {
         state.isLoading = false;

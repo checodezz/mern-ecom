@@ -60,8 +60,11 @@ const ProfileDropdown = () => {
                   className="dropdown-item"
                   type="button"
                   onClick={() => {
-                    dispatch(logoutAsync(user._id));
-                    dispatch(fetchUserDetails(null));
+                    // dispatch(logoutAsync(user._id));
+                    // dispatch(fetchUserDetails(null));
+                    dispatch(logoutAsync(user._id)).then(() => {
+                      navigate("/");
+                    });
                   }}
                 >
                   Logout
