@@ -1,36 +1,34 @@
 import { Link } from "react-router-dom";
-import { calculateDiscount, displayINRCurrency } from "../utils/helpers";
+import { calculateDiscount, displayINRCurrency } from "../../utils/helpers";
 import ReactStars from "react-rating-stars-component";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import ProductCardLoader from "./ProductCardLoader";
+import ProductCardLoader from "../../components/ProductCardLoader";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItemToCart,
   cartResetState,
   getCartItems,
   getCountCartItems,
-} from "../features/cart/cartSlice";
+} from "../cart/cartSlice";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   addProductToWishlist,
   getCountWishlistProducts,
   getWishlistProducts,
+  removeFromWishlistProduct,
+  setIsWishlisted,
   wishlistResetState,
-} from "../features/wishlist/wishlistSlice";
+} from "./wishlistSlice";
 
-const ProductCard = ({ product, isLoading }) => {
+const WishlistProductCard = ({ product, isLoading }) => {
   const dispatch = useDispatch();
 
   const { message, isSuccess, isError, cartItems } = useSelector(
     (state) => state.cart
   );
-  const {
-    message: wMessage,
-    isSuccess: wSuccess,
-    isError: wError,
-    wishlistProducts,
-  } = useSelector((state) => state.wishlist);
+  const { wishlistProducts } = useSelector((state) => state.wishlist);
+
   const [localIsWishlisted, setLocalIsWishlisted] = useState(false);
   const [localIsInCart, setLocalIsInCart] = useState(false);
 
@@ -48,24 +46,25 @@ const ProductCard = ({ product, isLoading }) => {
       );
       setLocalIsInCart(isInCart);
     }
-  }, [product?._id, wishlistProducts, cartItems]);
+  }, []);
 
   useEffect(() => {
-    if (isSuccess || wSuccess) {
-      toast.success(message || wMessage, {
+    if (isSuccess) {
+      toast.success(message, {
         toastId: "success",
       });
-    } else if (isError || wError) {
-      toast.error(message || wMessage, {
+    } else if (isError) {
+      toast.error(message, {
         toastId: "error",
       });
     }
-  }, [message, isSuccess, isError, wMessage, wSuccess, wError]);
+  }, [message, isSuccess, isError]);
+
   useEffect(() => {
     dispatch(cartResetState());
-    dispatch(wishlistResetState());
     dispatch(getWishlistProducts());
     dispatch(getCartItems());
+    dispatch(wishlistResetState());
   }, [dispatch, isSuccess, isError]);
 
   const handleAddToCart = (e, productId) => {
@@ -79,9 +78,20 @@ const ProductCard = ({ product, isLoading }) => {
 
   const handleAddToWishList = (e, productId) => {
     e.preventDefault();
+    console.log("wishlisted");
     dispatch(addProductToWishlist(productId)).then(() => {
-      dispatch(setLocalIsWishlisted(true));
+      dispatch(setIsWishlisted(true));
       dispatch(getCountWishlistProducts());
+    });
+  };
+
+  const handleRemoveFromWishList = (e, productId) => {
+    console.log("removed from wishlist");
+    e.stopPropagation();
+    e.preventDefault();
+    dispatch(removeFromWishlistProduct(productId)).then(() => {
+      dispatch(setIsWishlisted(false));
+      dispatch(getWishlistProducts());
     });
   };
 
@@ -176,7 +186,7 @@ const ProductCard = ({ product, isLoading }) => {
                   <button
                     type="button"
                     className="btn text-pink"
-                    onClick={(e) => handleAddToWishList(e, product?._id)}
+                    onClick={(e) => handleRemoveFromWishList(e, product?._id)}
                   >
                     <FaHeart size={25} />
                   </button>
@@ -219,4 +229,4 @@ const ProductCard = ({ product, isLoading }) => {
   );
 };
 
-export default ProductCard;
+export default WishlistProductCard;

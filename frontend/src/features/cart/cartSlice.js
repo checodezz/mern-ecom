@@ -100,6 +100,7 @@ const cartSlice = createSlice({
   initialState: {
     cartItems: [],
     cartItem: null,
+    isProductInCart: false,
     totalCartItems: null,
     totalQuantity: null,
     totalPrice: null, // sellingPrice * qty
@@ -138,6 +139,9 @@ const cartSlice = createSlice({
     },
     calculateTotalDiscount: (state) => {
       state.totalDiscount = state.totalMRP - state.totalPrice;
+    },
+    setIsProductInCart: (state, action) => {
+      state.isProductInCart = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -194,5 +198,6 @@ export const {
   calculateTotalPrice,
   calculateTotalMRP,
   calculateTotalDiscount,
+  setIsProductInCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;
