@@ -8,15 +8,18 @@ import CategoryList from "../../features/categories/CategoryList";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getCountCartItems } from "../../features/cart/cartSlice";
+import { getCountWishlistProducts } from "../../features/wishlist/wishlistSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const totalCartItems = useSelector((state) => state.cart.totalCartItems);
   const user = useSelector((state) => state?.user?.user);
+  const { wishlistProductCount } = useSelector((state) => state.wishlist);
 
   useEffect(() => {
     dispatch(getCountCartItems());
+    dispatch(getCountWishlistProducts());
   }, [dispatch]);
 
   const handleSearch = (e) => {
@@ -77,7 +80,7 @@ const Header = () => {
                   >
                     <FaRegHeart size={25} />
                     <span className="position-absolute top-0 start-99 translate-middle badge rounded-pill bg-pink">
-                      0
+                      {wishlistProductCount ? wishlistProductCount : 0}
                     </span>
                   </Link>
                   <Link

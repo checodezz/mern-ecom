@@ -1,27 +1,77 @@
 import { Link } from "react-router-dom";
-import { TbHeart, TbHeartFilled, TbHeartPlus } from "react-icons/tb";
+import { TbHeartFilled, TbHeartPlus } from "react-icons/tb";
 import ReactStars from "react-rating-stars-component";
 import { calculateDiscount, displayINRCurrency } from "../../../utils/helpers";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart, getCountCartItems } from "../../cart/cartSlice";
+import {
+  addItemToCart,
+  getCartItems,
+  getCountCartItems,
+  setIsProductInCart,
+} from "../../cart/cartSlice";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import {
+  addProductToWishlist,
+  getCountWishlistProducts,
+  getWishlistProducts,
+  setIsWishlisted,
+  wishlistResetState,
+} from "../../wishlist/wishlistSlice";
+import ProductInfoLoader from "./ProductInfoLoader";
 
 const ProductInfo = ({ product, isLoading }) => {
   const dispatch = useDispatch();
-  const { message, isSuccess, isError } = useSelector((state) => state.cart);
+  const { message, isSuccess, isError, cartItems, isProductInCart } =
+    useSelector((state) => state.cart);
+  const {
+    message: wMessage,
+    isSuccess: wSuccess,
+    isError: wError,
+    isWishlisted,
+    wishlistProducts,
+  } = useSelector((state) => state.wishlist);
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success(message, {
+    if (isSuccess || wSuccess) {
+      toast.success(message || wMessage, {
         toastId: "success",
       });
-    } else if (isError) {
-      toast.error(message, {
+    } else if (isError || wError) {
+      toast.error(message || wMessage, {
         toastId: "error",
       });
     }
-  }, [message, isSuccess, isError]);
+  }, [message, isSuccess, isError, wMessage, wSuccess, wError]);
+
+  useEffect(() => {
+    dispatch(getWishlistProducts());
+    dispatch(getCartItems());
+    dispatch(wishlistResetState());
+  }, [dispatch]);
+
+  // Determine if the current product is in the wishlist
+  useEffect(() => {
+    if (product?._id && wishlistProducts?.length > 0) {
+      const isProductInWishlist = wishlistProducts.some(
+        (item) => item.productId?._id === product?._id
+      );
+      dispatch(setIsWishlisted(isProductInWishlist));
+
+      const isInCart = cartItems.some(
+        (item) => item.productId?._id === product?._id
+      );
+      dispatch(setIsProductInCart(isInCart));
+    }
+  }, [dispatch, product, wishlistProducts, cartItems]);
+
+  const handleAddToWishList = (e, productId) => {
+    e.preventDefault();
+    dispatch(addProductToWishlist(productId)).then(() => {
+      dispatch(setIsWishlisted(true));
+      dispatch(getCountWishlistProducts());
+    });
+  };
 
   const handleAddToCart = (e, productId) => {
     e.preventDefault();
@@ -33,55 +83,7 @@ const ProductInfo = ({ product, isLoading }) => {
   return (
     <>
       {isLoading ? (
-        <div className="product-info">
-          <div className="pe-5">
-            <div
-              className="bg-slate-200 pulse-animation mb-2"
-              style={{ height: "2rem", width: "50%" }}
-            ></div>
-            <div
-              className="bg-slate-200 pulse-animation mb-2"
-              style={{ height: "1.5rem", width: "70%" }}
-            ></div>
-            <div
-              className="bg-slate-200 pulse-animation mb-2"
-              style={{ height: "1rem", width: "30%" }}
-            ></div>
-          </div>
-          <hr />
-
-          <div className="card-text d-flex justify-content-start align-items-center pe-5">
-            <div
-              className="bg-slate-200 pulse-animation me-2"
-              style={{ height: "2rem", width: "40%" }}
-            ></div>
-            <div
-              className="bg-slate-200 pulse-animation mx-2"
-              style={{ height: "1.5rem", width: "20%" }}
-            ></div>
-            <div
-              className="bg-slate-200 pulse-animation"
-              style={{ height: "1.5rem", width: "20%" }}
-            ></div>
-          </div>
-          <div
-            className="bg-slate-200 pulse-animation mb-2"
-            style={{ height: "1rem", width: "50%" }}
-          ></div>
-
-          {/* Wishlist and Cart Button Loaders */}
-          <div className="d-grid gap-3 d-md-flex my-4 pe-5">
-            <div
-              className="bg-slate-200 pulse-animation"
-              style={{ minWidth: "250px", height: "48px" }}
-            ></div>
-            <div
-              className="bg-slate-200 pulse-animation"
-              style={{ minWidth: "300px", height: "48px" }}
-            ></div>
-          </div>
-          <hr />
-        </div>
+        <ProductInfoLoader />
       ) : (
         <div>
           <div className="pe-5">
@@ -124,41 +126,47 @@ const ProductInfo = ({ product, isLoading }) => {
 
           {/* add to wishlist and add to bag button */}
           <div className="d-grid gap-3 d-md-flex my-4 pe-5">
-            <Link
-              className="btn border border-1 center-content rounded-0"
-              style={{ minWidth: "250px", height: "48px" }}
-            >
-              <TbHeartPlus style={{ fontSize: "24px" }} />{" "}
-              <span className="mx-2 fw-semibold">Add to Wishlist</span>
-            </Link>
-            <Link
-              className="btn btn-pink center-content rounded-0 fw-semibold w-100"
-              style={{ minWidth: "300px", height: "48px" }}
-              onClick={(e) => handleAddToCart(e, product?._id)}
-            >
-              Add to Cart
-            </Link>
+            {isWishlisted ? (
+              <Link
+                className="btn border border-1 center-content rounded-0"
+                style={{ minWidth: "250px", height: "48px" }}
+                onClick={(e) => handleAddToWishList(e, product?._id)}
+              >
+                <TbHeartFilled
+                  className="text-pink"
+                  style={{ fontSize: "24px" }}
+                />{" "}
+                <span className="mx-2 fw-semibold">Added to Wishlist</span>{" "}
+              </Link>
+            ) : (
+              <Link
+                className="btn border border-1 center-content rounded-0"
+                style={{ minWidth: "250px", height: "48px" }}
+                onClick={(e) => handleAddToWishList(e, product?._id)}
+              >
+                <TbHeartPlus style={{ fontSize: "24px" }} />{" "}
+                <span className="mx-2 fw-semibold">Add to Wishlist</span>
+              </Link>
+            )}
+
+            {isProductInCart ? (
+              <Link
+                className="btn btn-pink center-content rounded-0 fw-semibold w-100 "
+                style={{ minWidth: "300px", height: "48px" }}
+                to="/cart"
+              >
+                View Cart
+              </Link>
+            ) : (
+              <Link
+                className="btn btn-pink center-content rounded-0 fw-semibold w-100"
+                style={{ minWidth: "300px", height: "48px" }}
+                onClick={(e) => handleAddToCart(e, product?._id)}
+              >
+                Add to Cart
+              </Link>
+            )}
           </div>
-
-          {/* <div className="d-grid gap-2 d-md-flex my-4">
-    <Link
-      className="btn border border-1 center-content rounded-0"
-      style={{ minWidth: "206px", height: "48px" }}
-    >
-      <TbHeartFilled
-        className="text-pink"
-        style={{ fontSize: "24px" }}
-      />{" "}
-      <span className="mx-2 fw-semibold">Added to Wishlist</span>
-    </Link>
-    <Link
-      className="btn btn-pink center-content rounded-0 fw-semibold w-100 "
-      style={{ minWidth: "300px", height: "48px" }}
-    >
-      View Cart
-    </Link>
-  </div> */}
-
           <hr />
         </div>
       )}

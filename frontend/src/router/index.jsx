@@ -11,6 +11,7 @@ import AllCategoriesPage from "../features/admin/AllCategoriesPage";
 import ProductsDisplayPage from "../pages/ProductsDisplayPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage";
 import CartPage from "../pages/CartPage";
+import WishlistPage from "../pages/WishlistPage";
 
 const routes = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const routes = createBrowserRouter([
       {
         path: "cart",
         element: <CartPage />,
+      },
+      {
+        path: "wishlist",
+        element: <WishlistPage />,
       },
     ],
   },
