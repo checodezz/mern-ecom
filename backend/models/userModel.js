@@ -11,6 +11,19 @@ const userSchema = new mongoose.Schema(
     password: String,
     profilePic: String,
     role: String,
+    mobileNumber: Number,
+    altMobileNumber: Number,
+    gender: String,
+    birthday: String,
+    pincode: Number,
+    state: String,
+    address: String,
+    town: String,
+    district: String,
+    typeOfAddress: {
+      type: String,
+      default: "home",
+    },
   },
   { timestamps: true }
 );

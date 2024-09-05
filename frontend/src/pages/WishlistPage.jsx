@@ -18,7 +18,7 @@ const WishlistPage = () => {
   }, [dispatch]);
 
   return (
-    <main className="container-fluid  px-4 py-4">
+    <main className="container-fluid px-4 py-4">
       <div className="w-100 bg-white text-center py-1">
         <h1>
           My Wishlist{" "}

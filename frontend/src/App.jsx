@@ -31,7 +31,6 @@ const App = () => {
         onOpen: () => {
           setShouldReload(false);
         },
-        style: { backgroundColor: "#F44336", color: "white" },
       });
     }
     dispatch(authResetState());

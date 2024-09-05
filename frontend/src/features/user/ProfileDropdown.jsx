@@ -1,9 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { FaRegCircleUser } from "react-icons/fa6";
+import { FaHeart, FaRegCircleUser, FaRegHeart } from "react-icons/fa6";
 import { logoutAsync } from "../auth/authSlice";
 import { fetchUserDetails } from "./userSlice";
+
+import { FaRegUser } from "react-icons/fa6";
+import { FiLogOut, FiMapPin } from "react-icons/fi";
+import { BiReceipt } from "react-icons/bi";
+import { MdAdminPanelSettings } from "react-icons/md";
 import { ROLE } from "../../config";
 
 const ProfileDropdown = () => {
@@ -23,7 +28,7 @@ const ProfileDropdown = () => {
       {user ? (
         <div className="dropdown ms-2">
           <Link
-            className="nav-link "
+            className="nav-link btn dropdown-toggle"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
@@ -40,34 +45,84 @@ const ProfileDropdown = () => {
             )}
           </Link>
           <ul className="dropdown-menu">
-            <li>
-              {user?.role === ROLE.ADMIN && (
-                <Link className="dropdown-item" to="/admin-panel/all-products">
-                  Admin Panel
+            {user?.role === ROLE.ADMIN && (
+              <li className="border-bottom">
+                <Link
+                  className="dropdown-item d-flex justify-content-start align-items-center"
+                  to="/admin-panel/all-products"
+                >
+                  <div className="me-1 ">
+                    <MdAdminPanelSettings />
+                  </div>
+                  <p className=" mb-0"> Admin Panel</p>
                 </Link>
-              )}
+              </li>
+            )}
+
+            {/* <li className="border-bottom">
+              <Link
+                className="dropdown-item d-flex justify-content-start align-items-center"
+                to="#"
+              >
+                <div className="me-1 ">
+                  <BiReceipt />
+                </div>
+                <p className=" mb-0">Orders</p>
+              </Link>
+            </li> */}
+
+            <li className="border-bottom">
+              <Link
+                className="dropdown-item d-flex justify-content-start align-items-center"
+                to="/wishlist"
+              >
+                <div className="me-1 ">
+                  <FaRegHeart />
+                </div>
+                <p className=" mb-0">Wishlist</p>
+              </Link>
             </li>
 
-            <li>
-              <Link className="dropdown-item" to="#">
-                Profile
+            <li className="border-bottom">
+              <Link
+                className="dropdown-item d-flex justify-content-start align-items-center"
+                to="/my/profile/edit"
+              >
+                <div className="me-1 ">
+                  <FaRegUser />
+                </div>
+                <p className=" mb-0">Edit Profile</p>
+              </Link>
+            </li>
+
+            <li className="border-bottom">
+              <Link
+                className="dropdown-item d-flex justify-content-start align-items-center"
+                to="/my/address"
+              >
+                <div className="me-1 ">
+                  <FiMapPin />
+                </div>
+                <p className=" mb-0">Saved Addresses</p>
               </Link>
             </li>
 
             {user?._id && (
               <li>
                 <Link
-                  className="dropdown-item"
+                  className="dropdown-item d-flex justify-content-start align-items-center"
                   type="button"
                   onClick={() => {
-                    // dispatch(logoutAsync(user._id));
-                    // dispatch(fetchUserDetails(null));
                     dispatch(logoutAsync(user._id)).then(() => {
+                      dispatch(fetchUserDetails(null));
                       navigate("/");
                     });
                   }}
                 >
-                  Logout
+                  <div className="me-1 ">
+                    <FiLogOut />
+                  </div>
+                  <p className=" mb-0">Logout</p>
                 </Link>
               </li>
             )}
