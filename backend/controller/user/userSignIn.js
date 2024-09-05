@@ -39,8 +39,10 @@ async function userSignInController(req, res) {
       }
     );
 
+    const tokenOption = { httpOnly: true, secure: true, sameSite: "None" };
+
     res
-      .cookie("token", token, { httpOnly: true, secure: true })
+      .cookie("token", token, tokenOption)
       .json({ message: "Login successful!", token, success: true });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error: true });

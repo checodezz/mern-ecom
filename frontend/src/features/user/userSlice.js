@@ -17,6 +17,42 @@ export const fetchUserDetails = createAsyncThunk(
   }
 );
 
+export const editUserProfile = createAsyncThunk(
+  "user/editUserProfile",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${API_DOMAIN}/edit/user-profile`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteUserAccount = createAsyncThunk(
+  "user/deleteUserAccount",
+  async (userId, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${API_DOMAIN}/delete/user-account`,
+        userId,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -34,10 +70,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
         state.user = action.payload.data;
-        state.message =
-          action.payload?.message || "User details fetched successfully.";
       })
       .addCase(fetchUserDetails.rejected, (state, action) => {
         state.isLoading = false;
@@ -45,6 +78,24 @@ const userSlice = createSlice({
         state.message =
           action.payload?.message ||
           "Failed to fetch user details. Please try again.";
+      })
+      .addCase(editUserProfile.fulfilled, (state, action) => {
+        state.isSuccess = true;
+        state.message = action.payload?.message;
+      })
+      .addCase(editUserProfile.rejected, (state, action) => {
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload?.message;
+      })
+      .addCase(deleteUserAccount.fulfilled, (state, action) => {
+        state.isSuccess = true;
+        state.message = action.payload?.message;
+      })
+      .addCase(deleteUserAccount.rejected, (state, action) => {
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload?.message;
       });
   },
 });

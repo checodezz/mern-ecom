@@ -10,11 +10,19 @@ const getWishlistProductsController = require("../controller/wishlist/getWishlis
 const addProductToWishlistController = require("../controller/wishlist/addProductToWishlist");
 const countWishlistProducts = require("../controller/wishlist/countWishlistProducts");
 const deleteWishlistProductController = require("../controller/wishlist/deleteWishlistProduct");
+const editUserInfoController = require("../controller/user/editUserInfo");
+const deleteUserController = require("../controller/user/deleteUser");
 
 router.post("/signUp", userSignUpController);
 router.post("/signin", userSignInController);
 router.get("/user-details", authToken, userDetailsController);
 router.get("/logout", userLogoutController);
+
+// update user profile
+router.post("/edit/user-profile", authToken, editUserInfoController);
+
+// delete user account
+router.post("/delete/user-account", authToken, deleteUserController);
 
 // get wishlist products
 router.get("/get/wishlist", authToken, getWishlistProductsController);

@@ -227,6 +227,22 @@ main {
   height: 100%;
 }
 
+/* user profile */
+#userProfileCard .card,
+#userAddress .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#userProfileCard .card:hover,
+#userAddress .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#userProfileCard .text-secondary {
+  transition: color 0.3s ease;
+}
+
 /* Apply flex-column layout for image thumbnails on XS screens */
 @media (max-width: 576px) {
   .image-container {
