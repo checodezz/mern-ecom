@@ -1,16 +1,50 @@
 import { useSelector } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
 import { FaRegCircleUser } from "react-icons/fa6";
+import { useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const AdminPanelPage = () => {
   const user = useSelector((state) => state.user.user);
-  // console.log(user);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <div className="d-flex min-h" style={{ minHeight: "calc(100vh - 100px)" }}>
+    <div
+      className="d-flex d-grid min-h justify-content-between align-items-start"
+      style={{ minHeight: "calc(100vh - 100px)" }}
+    >
+      {/* Toggle button next to the Outlet content */}
+      <button
+        className="btn btn-light d-md-none mt-4 ms-3"
+        onClick={toggleSidebar}
+        style={{
+          // position: "absolute",
+          // top: "20px",
+          left: isSidebarOpen ? "300px" : "20px",
+          height: isSidebarOpen ? "100%" : "50px",
+          zIndex: 1000,
+        }}
+      >
+        {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+      </button>
+
+      {/* Sidebar */}
       <aside
-        className="bg-white flex-shrink-0 custom-shadow"
-        style={{ width: "280px" }}
+        className={`bg-white custom-shadow ${
+          isSidebarOpen ? "d-block" : "d-none"
+        } d-md-block`}
+        style={{
+          width: "280px",
+          position: isSidebarOpen ? "absolute" : "static",
+          // top: "0",
+          left: "0",
+          height: "100vh",
+          zIndex: 999,
+        }}
       >
         <div
           className="d-flex flex-column justify-content-center align-items-center"
@@ -38,7 +72,8 @@ const AdminPanelPage = () => {
           <p className="text-capitalize mb-0 fw-bold">{user?.name}</p>
           <p className="mb-0">{user?.role}</p>
         </div>
-        {/* admin navigation */}
+
+        {/* Admin Navigation */}
         <nav>
           <ul className="navbar-nav">
             <li className="nav-item">
@@ -68,7 +103,9 @@ const AdminPanelPage = () => {
           </ul>
         </nav>
       </aside>
-      <main className="flex-grow-1 p-4 w-100 h-100">
+
+      {/* Main Content */}
+      <main className="flex-grow-1 p-4 w-100 h-100 ">
         <Outlet />
       </main>
     </div>

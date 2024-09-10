@@ -122,7 +122,7 @@ const CartItems = ({ cartItems, isLoading }) => {
                     <div className="col-md-8 ">
                       <div className="ms-md-5" style={{ minWidth: "32rem" }}>
                         <h5
-                          className="text-truncate p-name-25 w-lg-25 w-sm-25"
+                          className="text-truncate heading-width-sm"
                           style={{ maxWidth: "32rem" }}
                         >
                           {product?.name}

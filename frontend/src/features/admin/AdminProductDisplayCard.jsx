@@ -5,7 +5,7 @@ import { displayINRCurrency } from "../../utils/helpers";
 const AdminProductDisplayCard = ({ product, onEdit }) => {
   return (
     <div className="col-lg-3 col-md-6">
-      <div className="card h-100" style={{ width: "15rem" }}>
+      <div className="card h-100">
         <div
           className="d-flex justify-content-center align-items-center mx-auto mt-3"
           style={{ width: "12rem", height: "12rem" }}

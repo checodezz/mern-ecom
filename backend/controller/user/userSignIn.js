@@ -31,6 +31,7 @@ async function userSignInController(req, res) {
         .json({ message: "Incorrect password.", error: true });
     }
 
+    // generates JWT token
     const token = jwt.sign(
       { _id: user._id, email: user.email },
       process.env.TOKEN_SECRET_KEY,
@@ -39,6 +40,7 @@ async function userSignInController(req, res) {
       }
     );
 
+    // set cookie
     const tokenOption = { httpOnly: true, secure: true, sameSite: "None" };
 
     res

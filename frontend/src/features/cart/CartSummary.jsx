@@ -101,9 +101,9 @@ const CartSummary = ({ cartItems, isLoading }) => {
             </div>
             <hr className="mx-4" />
           </div>
-          <div className="card-footer">
+          <div className="card-footer ">
             <button
-              className="btn text-teal fw-bold text-uppercase"
+              className="btn text-teal fw-bold text-uppercase w-100"
               onClick={handlePayment}
             >
               Place Order

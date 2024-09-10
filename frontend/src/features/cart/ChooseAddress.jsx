@@ -29,7 +29,10 @@ const ChooseAddress = () => {
         </p>
       </div>
       <div className="card-footer">
-        <Link className="btn text-teal fw-bold text-uppercase" to="/my/address">
+        <Link
+          className="btn text-teal fw-bold text-uppercase w-100"
+          to="/my/address"
+        >
           Change Address
         </Link>
       </div>

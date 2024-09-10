@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { calculateDiscount, displayINRCurrency } from "../utils/helpers";
-import ReactStars from "react-rating-stars-component";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import ProductCardLoader from "./ProductCardLoader";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +17,7 @@ import {
   getWishlistProducts,
   wishlistResetState,
 } from "../features/wishlist/wishlistSlice";
+import { FaStar } from "react-icons/fa6";
 
 const ProductCard = ({ product, isLoading }) => {
   const dispatch = useDispatch();
@@ -156,13 +156,10 @@ const ProductCard = ({ product, isLoading }) => {
               {/* Rating */}
               <div className="d-flex justify-content-start align-items-center">
                 <span className="me-1">{product?.rating}</span>
-                <ReactStars
-                  count={1}
-                  value={product?.rating}
-                  size={25}
-                  activeColor="#ffd700"
-                  edit={false}
-                />
+
+                <div className="mb-0 pb-0" style={{ color: "#ffd700" }}>
+                  <FaStar />
+                </div>
               </div>
             </div>
 

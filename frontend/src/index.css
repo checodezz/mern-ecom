@@ -275,4 +275,9 @@ main {
   .product-zoom-image {
     display: none;
   }
+
+  /*  products heading */
+  .heading-width-sm {
+    width: 18rem;
+  }
 }

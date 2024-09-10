@@ -35,10 +35,10 @@ const CartPage = () => {
 
       {cartItems.length !== 0 && (
         <div className="row g-4">
-          <div className="col-md-8">
+          <div className="col-lg-8">
             <CartItems cartItems={cartItems} isLoading={isLoading} />
           </div>
-          <div className="col-md-4 ">
+          <div className="col-lg-4 ">
             <div className="d-flex flex-column gap-4">
               <ChooseAddress />
               <CartSummary cartItems={cartItems} isLoading={isLoading} />

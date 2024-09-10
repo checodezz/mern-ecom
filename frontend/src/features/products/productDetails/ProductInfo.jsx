@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { TbHeartFilled, TbHeartPlus } from "react-icons/tb";
-import ReactStars from "react-rating-stars-component";
 import { calculateDiscount, displayINRCurrency } from "../../../utils/helpers";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,6 +19,7 @@ import {
 } from "../../wishlist/wishlistSlice";
 import ProductInfoLoader from "./ProductInfoLoader";
 import { productResetState } from "../productSlice";
+import { FaStar } from "react-icons/fa6";
 
 const ProductInfo = ({ product, isLoading }) => {
   const dispatch = useDispatch();
@@ -97,13 +97,9 @@ const ProductInfo = ({ product, isLoading }) => {
               style={{ width: "80px", height: "30px" }}
             >
               <span className="me-1 fw-bold">{product?.rating}</span>
-              <ReactStars
-                count={1}
-                size={20}
-                value={product?.rating}
-                activeColor="#ffd700"
-                edit={false}
-              />
+              <div className="mb-0 pb-0" style={{ color: "#ffd700" }}>
+                <FaStar />
+              </div>
             </p>
           </div>
           <hr />
