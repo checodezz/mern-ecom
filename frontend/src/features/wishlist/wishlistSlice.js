@@ -31,6 +31,7 @@ export const addProductToWishlist = createAsyncThunk(
           withCredentials: true,
         }
       );
+      await thunkAPI.dispatch(getCountWishlistProducts());
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -116,7 +117,7 @@ const wishlistSlice = createSlice({
       })
       .addCase(getCountWishlistProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.wishlistProductCount = action?.payload.data.count;
+        state.wishlistProductCount = action?.payload.data?.count;
       })
       .addCase(getCountWishlistProducts.rejected, (state) => {
         state.isLoading = false;
@@ -138,11 +139,15 @@ const wishlistSlice = createSlice({
       .addCase(removeFromWishlistProduct.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(removeFromWishlistProduct.fulfilled, (state) => {
+      .addCase(removeFromWishlistProduct.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload?.message;
       })
-      .addCase(removeFromWishlistProduct.rejected, (state) => {
+      .addCase(removeFromWishlistProduct.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload?.message;
       });
   },
 });

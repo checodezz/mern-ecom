@@ -1,15 +1,42 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { calculateDiscount, displayINRCurrency } from "../../utils/helpers";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
 import { deleteCartItem, getCartItems, updateCartItem } from "./cartSlice";
 import CartItemsLoader from "./CartItemsLoader";
+import {
+  addProductToWishlist,
+  wishlistResetState,
+} from "../wishlist/wishlistSlice";
+import { useEffect } from "react";
+import { productResetState } from "../products/productSlice";
 
 const CartItems = ({ cartItems, isLoading }) => {
-  const loadingCart = new Array(4).fill(null);
   const dispatch = useDispatch();
   const { totalPrice } = useSelector((state) => state.cart);
+  const { isSuccess, isError, message } = useSelector((state) => state.cart);
+
+  const {
+    message: wMessage,
+    isSuccess: wSuccess,
+    isError: wError,
+  } = useSelector((state) => state.wishlist);
+
+  useEffect(() => {
+    if (isSuccess || wSuccess) {
+      toast.success(message || wMessage, {
+        toastId: "success",
+      });
+    } else if (isError || wError) {
+      toast.error(message || wMessage, {
+        toastId: "error",
+      });
+    }
+    dispatch(productResetState());
+    dispatch(wishlistResetState());
+  }, [message, isSuccess, isError, wMessage, wSuccess, wError, dispatch]);
 
   const increaseQtyHandler = (cartItemId, qty) => {
     const updateQuantity = qty + 1;
@@ -55,7 +82,7 @@ const CartItems = ({ cartItems, isLoading }) => {
               return (
                 <li
                   className="list-group-item d-flex position-relative"
-                  key={cartItem._id}
+                  key={cartItem?._id}
                 >
                   {/* delete button and save for latter button cart item */}
 
@@ -71,7 +98,7 @@ const CartItems = ({ cartItems, isLoading }) => {
                       className="col-md-4 d-flex justify-content-center align-items-center"
                       style={{ width: "8rem", height: "8rem" }}
                     >
-                      <Link to={`/products/${product._id}`}>
+                      <Link to={`/products/${product?._id}`}>
                         <div
                           className="image-container m-4"
                           style={{
@@ -150,18 +177,36 @@ const CartItems = ({ cartItems, isLoading }) => {
                               <FaPlus />
                             </button>
                           </div>
-                          {cartItem?.quantity > 1 && (
-                            <div
-                              className="border-start mx-1 "
-                              style={{ height: "2rem" }}
-                            ></div>
-                          )}
-                          <div className="ms-2 text-teal fw-bold">
-                            {calculatePrice(
-                              product?.sellingPrice,
-                              cartItem?.quantity
-                            )}
+                          <div
+                            className="border-start mx-1 "
+                            style={{ height: "2rem" }}
+                          ></div>
+                          <div className="">
+                            <button
+                              className="btn text-teal text-decoration-none"
+                              onClick={() => {
+                                dispatch(addProductToWishlist(product?._id));
+                              }}
+                            >
+                              Move to wishlist
+                            </button>
                           </div>
+
+                          {cartItem?.quantity > 1 && (
+                            <>
+                              <div
+                                className="border-start mx-1 "
+                                style={{ height: "2rem" }}
+                              ></div>
+
+                              <div className="ms-2 text-teal fw-bold">
+                                {calculatePrice(
+                                  product?.sellingPrice,
+                                  cartItem?.quantity
+                                )}
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -173,7 +218,7 @@ const CartItems = ({ cartItems, isLoading }) => {
           <hr className="mt-0 pt-0" />
           <div className="d-flex justify-content-end">
             <h5>
-              Total ({cartItems.length} items):{" "}
+              Total ({cartItems?.length} items):{" "}
               <span className="fw-bold">{displayINRCurrency(totalPrice)}</span>
             </h5>
           </div>

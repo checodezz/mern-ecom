@@ -1,10 +1,12 @@
-import img1 from "../assets/banner/img1.webp";
+import img1 from "../assets/banner/img1.jpg";
 import img2 from "../assets/banner/img2.jpg";
 import img3 from "../assets/banner/img3.webp";
-import img4 from "../assets/banner/img4.jpg";
+import img4 from "../assets/banner/img4.png";
 import img5 from "../assets/banner/img5.jpg";
+import img6 from "../assets/banner/img6.jpg";
+import img7 from "../assets/banner/img7.webp";
 
-const carouselImages = [img1, img2, img3, img4, img5];
+const carouselImages = [img1, img2, img3, img4, img5, img6, img7];
 
 const BannerProductCarousel = () => {
   return (

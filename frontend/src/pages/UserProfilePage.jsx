@@ -58,14 +58,14 @@ const UserProfilePage = () => {
                 Profile
               </Link>
             </li>
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <Link
                 className="nav-link text-decoration-none hover-bg-slate-200 px-4"
                 to={"orders"}
               >
                 Orders
               </Link>
-            </li> */}
+            </li>
             <li className="nav-item">
               <Link
                 className="nav-link text-decoration-none hover-bg-slate-200 px-4"

@@ -28,27 +28,29 @@ const HomePage = () => {
       <SubCategoryListWithProducts />
       <HorizontalCardProducts
         subCategory={"headphones"}
-        heading={"Top Headphones"}
+        heading={"Top Headphones: Unmatched Sound Quality"}
       />
 
       <HorizontalCardProducts
         subCategory={"watches"}
-        heading={"Popular Watches"}
+        heading={"Timeless Pieces: Discover Popular Watches"}
       />
 
       <VerticalCardProducts
         subCategory={"mobile"}
-        heading={"Trending Mobile"}
+        heading={"Top-Selling Smartphones of the Year"}
       />
 
       <VerticalCardProducts
         subCategory={"televisions"}
-        heading={"Trending Televisions"}
+        heading={
+          "Best-Selling Televisions: Experience the Future of Entertainment"
+        }
       />
 
       <VerticalCardProducts
         subCategory={"clothing"}
-        heading={"Trending in clothing"}
+        heading={"Discover the Latest Trends"}
       />
     </div>
   );

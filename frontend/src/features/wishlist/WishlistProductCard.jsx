@@ -20,6 +20,8 @@ import {
   setIsWishlisted,
   wishlistResetState,
 } from "./wishlistSlice";
+import { productResetState } from "../products/productSlice";
+import { RxCross1 } from "react-icons/rx";
 
 const WishlistProductCard = ({ product, isLoading }) => {
   const dispatch = useDispatch();
@@ -27,7 +29,27 @@ const WishlistProductCard = ({ product, isLoading }) => {
   const { message, isSuccess, isError, cartItems } = useSelector(
     (state) => state.cart
   );
-  const { wishlistProducts } = useSelector((state) => state.wishlist);
+
+  const {
+    message: wMessage,
+    isSuccess: wSuccess,
+    isError: wError,
+    wishlistProducts,
+  } = useSelector((state) => state.wishlist);
+
+  useEffect(() => {
+    if (isSuccess || wSuccess) {
+      toast.success(message || wMessage, {
+        toastId: "success",
+      });
+    } else if (isError || wError) {
+      toast.error(message || wMessage, {
+        toastId: "error",
+      });
+    }
+    dispatch(productResetState());
+    dispatch(wishlistResetState());
+  }, [message, isSuccess, isError, wMessage, wSuccess, wError, dispatch]);
 
   const [localIsWishlisted, setLocalIsWishlisted] = useState(false);
   const [localIsInCart, setLocalIsInCart] = useState(false);
@@ -47,18 +69,6 @@ const WishlistProductCard = ({ product, isLoading }) => {
       setLocalIsInCart(isInCart);
     }
   }, []);
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success(message, {
-        toastId: "success",
-      });
-    } else if (isError) {
-      toast.error(message, {
-        toastId: "error",
-      });
-    }
-  }, [message, isSuccess, isError]);
 
   useEffect(() => {
     dispatch(cartResetState());
@@ -101,12 +111,19 @@ const WishlistProductCard = ({ product, isLoading }) => {
         <ProductCardLoader />
       ) : (
         <div
-          className="card w-100"
+          className="card w-100 position-relative"
           style={{
             minWidth: "100%",
             maxWidth: "15rem",
           }}
         >
+          <div
+            className="position-absolute btn"
+            style={{ top: "5px", right: "10px" }}
+            onClick={(e) => handleRemoveFromWishList(e, product?._id)}
+          >
+            <RxCross1 size={20} />
+          </div>
           <Link
             className="text-decoration-none text-black"
             to={`/products/details/${product._id}`}
@@ -182,23 +199,13 @@ const WishlistProductCard = ({ product, isLoading }) => {
               }}
             >
               <div className="col-3 center-content border-top">
-                {localIsWishlisted ? (
-                  <button
-                    type="button"
-                    className="btn text-pink"
-                    onClick={(e) => handleRemoveFromWishList(e, product?._id)}
-                  >
-                    <FaHeart size={25} />
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="btn text-dark"
-                    onClick={(e) => handleAddToWishList(e, product?._id)}
-                  >
-                    <FaRegHeart size={25} />
-                  </button>
-                )}
+                <button
+                  type="button"
+                  className="btn text-pink"
+                  onClick={(e) => handleAddToWishList(e, product?._id)}
+                >
+                  <FaHeart size={25} />
+                </button>
               </div>
               <div
                 className="col-9 center-content bg-pink"
