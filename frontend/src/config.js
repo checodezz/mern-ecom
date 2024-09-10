@@ -1,5 +1,5 @@
-// const API_DOMAIN = "http://localhost:8080/api";
-const API_DOMAIN = "https://mern-ecom-api-omega.vercel.app/api";
+const API_DOMAIN = `${import.meta.env.VITE_APP_API_URL}/api`;
+// console.log(API_DOMAIN);
 
 // Define user roles (if needed for your logic)
 export const ROLE = {

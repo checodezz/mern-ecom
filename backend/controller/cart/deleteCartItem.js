@@ -8,7 +8,7 @@ const deleteCartItemController = async (req, res) => {
     const deleteCartItem = await cartModel.findByIdAndDelete(cartItemId);
 
     res.json({
-      message: "Product deleted successfully.",
+      message: "Item removed from cart successfully.",
       data: deleteCartItem,
       error: false,
       success: true,

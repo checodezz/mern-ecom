@@ -19,6 +19,7 @@ import {
   wishlistResetState,
 } from "../../wishlist/wishlistSlice";
 import ProductInfoLoader from "./ProductInfoLoader";
+import { productResetState } from "../productSlice";
 
 const ProductInfo = ({ product, isLoading }) => {
   const dispatch = useDispatch();
@@ -42,7 +43,9 @@ const ProductInfo = ({ product, isLoading }) => {
         toastId: "error",
       });
     }
-  }, [message, isSuccess, isError, wMessage, wSuccess, wError]);
+    dispatch(productResetState());
+    dispatch(wishlistResetState());
+  }, [message, isSuccess, isError, wMessage, wSuccess, wError, dispatch]);
 
   useEffect(() => {
     dispatch(getWishlistProducts());

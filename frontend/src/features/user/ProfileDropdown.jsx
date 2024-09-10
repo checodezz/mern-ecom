@@ -59,17 +59,17 @@ const ProfileDropdown = () => {
               </li>
             )}
 
-            {/* <li className="border-bottom">
+            <li className="border-bottom">
               <Link
                 className="dropdown-item d-flex justify-content-start align-items-center"
-                to="#"
+                to="/my/orders"
               >
                 <div className="me-1 ">
                   <BiReceipt />
                 </div>
                 <p className=" mb-0">Orders</p>
               </Link>
-            </li> */}
+            </li>
 
             <li className="border-bottom">
               <Link

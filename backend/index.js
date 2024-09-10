@@ -9,6 +9,7 @@ const adminRouter = require("./routes/adminRoutes.js");
 const productRouter = require("./routes/productRoutes.js");
 const categoryRouter = require("./routes/categoryRoutes.js");
 const cartRouter = require("./routes/cartRoutes.js");
+const orderRouter = require("./routes/orderRoutes.js");
 
 const app = express();
 const corsOptions = {
@@ -27,6 +28,7 @@ app.use("/api", adminRouter);
 app.use("/api", productRouter);
 app.use("/api", categoryRouter);
 app.use("/api", cartRouter);
+app.use("/api", orderRouter);
 
 const PORT = 8080 || process.env.PORT;
 

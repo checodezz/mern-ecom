@@ -1,49 +1,33 @@
 import React, { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { editUserProfile } from "./userSlice";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import AddEditUserAddressForm from "./AddEditUserAddressForm"; // Import the form component
+import {
+  deleteUserAddress,
+  fetchUserAddresses,
+  setCheckoutAddress,
+  userResetState,
+} from "./userSlice";
+import { RxCross1 } from "react-icons/rx";
 
 const UserAddress = () => {
   const dispatch = useDispatch();
-  const { user, isSuccess, isError, message } = useSelector(
-    (state) => state.user
-  );
+  const {
+    user,
+    isSuccess,
+    isError,
+    message,
+    addresses,
+    defaultAddress,
+    otherAddresses,
+  } = useSelector((state) => state.user);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobileNumber: "",
-    altMobileNumber: "",
-    gender: "",
-    birthday: "",
-    pincode: "",
-    state: "",
-    address: "",
-    town: "",
-    district: "",
-    typeOfAddress: "",
-  });
+  const navigate = useNavigate();
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // State to determine if we're adding or editing
 
-  useEffect(() => {
-    if (user?._id) {
-      setFormData({
-        name: user?.name,
-        email: user?.email,
-        mobileNumber: user?.mobileNumber,
-        altMobileNumber: user?.altMobileNumber,
-        gender: user?.gender,
-        birthday: user?.birthday,
-        pincode: user?.pincode,
-        state: user?.state,
-        address: user?.address,
-        town: user?.town,
-        district: user?.district,
-        typeOfAddress: user?.typeOfAddress,
-      });
-    }
-  }, [user]);
+  console.log(selectedAddress);
 
   useEffect(() => {
     if (isSuccess) {
@@ -51,48 +35,180 @@ const UserAddress = () => {
     } else if (isError) {
       toast.error(message);
     }
-  }, [message, isSuccess, isError]);
+    dispatch(userResetState());
+  }, [message, isSuccess, isError, dispatch]);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const dataToUpdate = user?._id && { userId: user?._id, ...formData };
-    if (dataToUpdate) {
-      dispatch(editUserProfile(dataToUpdate));
+  const handleEditAddress = (address) => {
+    setSelectedAddress(address);
+    setIsEditing(true);
+  };
+
+  const handleAddAddress = () => {
+    setSelectedAddress(null);
+    setIsEditing(false);
+  };
+
+  const handleDeleteAddress = (addressId) => {
+    // console.log(addressId);
+    dispatch(deleteUserAddress(addressId)).then(() => {
+      dispatch(fetchUserAddresses());
+    });
+  };
+
+  const handleProceedToCheckout = (address) => {
+    if (address) {
+      dispatch(setCheckoutAddress(address));
+      navigate("/cart");
+    } else {
+      toast.error("Please select an address before proceeding.");
     }
   };
 
+  useEffect(() => {
+    dispatch(fetchUserAddresses());
+  }, [dispatch]);
+
   return (
-    <div className="container-fluid pe-5 ">
+    <div className="container-fluid pe-5">
       <div className="bg-white p-4 me-5">
-        <div className="border-bottom">
+        <div className="border-bottom d-flex justify-content-between align-items-center">
           <h5 className="fw-bold">Saved Addresses</h5>
-        </div>
-        <div className="my-4 me-5" id="userAddress">
-          <div className="card rounded-0">
-            <div className="card-body text-secondary">
-              <h6 className="fw-bold text-capitalize">{user?.name}</h6>
-              <p className="mb-0 small text-capitalize">{user?.address}</p>
-              <p className="mb-0 small text-capitalize">{user?.town}</p>
-              <p className="mb-0 small text-capitalize">
-                {user?.district} - {user?.pincode}
-              </p>
-              <p className=" small text-capitalize">{user?.state}</p>
-              <p className="small">Mobile: {user?.mobileNumber}</p>
-            </div>
-            <div className="card-footer bg-white ">
-              <button
-                type="button"
-                className="btn w-100 text-start text-teal fw-bold"
-                data-bs-toggle="modal"
-                data-bs-target="#userAddressModal"
-              >
-                Edit
-              </button>
-            </div>
-          </div>
+          <button
+            className="btn btn-outline-dark text-uppercase mb-3"
+            onClick={handleAddAddress}
+            data-bs-toggle="modal"
+            data-bs-target="#userAddressModal"
+          >
+            + Add New Address
+          </button>
         </div>
 
-        {/* user address modal  */}
+        {/* Default Address Section */}
+        {defaultAddress && (
+          <div className="my-4 me-5">
+            <h6 className="fw-bold">Default Address</h6>
+            <div className="card rounded-0 mb-4 position-relative">
+              <div
+                className="position-absolute btn "
+                style={{ right: "10px", top: "5px" }}
+                onClick={() => handleDeleteAddress(defaultAddress?._id)}
+              >
+                <RxCross1 size={20} />
+              </div>
+              <div className="card-body text-secondary">
+                <h6 className="fw-bold text-dark text-capitalize">
+                  {defaultAddress?.fullName}
+                </h6>
+                <p className="mb-0 small text-capitalize">
+                  {defaultAddress?.address}
+                </p>
+                <p className="mb-0 small text-capitalize">
+                  {defaultAddress?.town}
+                </p>
+                <p className="mb-0 small text-capitalize">
+                  {defaultAddress?.district},{" "}
+                  <span className="small text-capitalize">
+                    {defaultAddress?.state}
+                  </span>{" "}
+                  -{defaultAddress?.pincode}
+                </p>
+
+                <p className="small">
+                  Mobile:{" "}
+                  <span className="fw-bold text-dark">
+                    {defaultAddress?.mobileNo}
+                  </span>
+                </p>
+
+                <div className="d-flex">
+                  {" "}
+                  <button
+                    type="button"
+                    className="btn text-teal justify-content-center align-items-center rounded-0 text-start  fw-bold"
+                    onClick={() => handleEditAddress(defaultAddress)}
+                    data-bs-toggle="modal"
+                    data-bs-target="#userAddressModal"
+                  >
+                    Edit
+                  </button>
+                  <div
+                    className="border-start mx-1 "
+                    style={{ height: "2rem" }}
+                  ></div>
+                  <Link
+                    type="button"
+                    className="btn w-100 text-start text-teal fw-bold"
+                    onClick={() => handleProceedToCheckout(defaultAddress)}
+                  >
+                    Use this address
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Other Addresses Section */}
+
+        <div className="my-4 me-5">
+          <h6 className="fw-bold">Other Addresses</h6>
+          {otherAddresses.map((address) => (
+            <div
+              key={address._id}
+              className="card rounded-0 mb-4 position-relative"
+            >
+              <div
+                className="position-absolute btn"
+                style={{ right: "10px", top: "5px" }}
+                onClick={() => handleDeleteAddress(address._id)} // Pass `address._id` here, not `defaultAddress._id`
+              >
+                <RxCross1 size={20} />
+              </div>
+              <div className="card-body text-secondary">
+                <h6 className="fw-bold text-dark text-capitalize">
+                  {address.fullName}{" "}
+                  {/* Use `address.fullName` instead of `defaultAddress.fullName` */}
+                </h6>
+                <p className="mb-0 small text-capitalize">{address.address}</p>
+                <p className="mb-0 small text-capitalize">{address.town}</p>
+                <p className="mb-0 small text-capitalize">
+                  {address.district},{" "}
+                  <span className="small text-capitalize">{address.state}</span>{" "}
+                  -{address.pincode}
+                </p>
+                <p className="small">
+                  Mobile:{" "}
+                  <span className="fw-bold text-dark">{address.mobileNo}</span>
+                </p>
+
+                <div className="d-flex">
+                  <button
+                    type="button"
+                    className="btn text-teal justify-content-center align-items-center rounded-0 text-start  fw-bold"
+                    onClick={() => handleEditAddress(address)} // Pass `address` here
+                    data-bs-toggle="modal"
+                    data-bs-target="#userAddressModal"
+                  >
+                    Edit
+                  </button>
+                  <div
+                    className="border-start mx-1"
+                    style={{ height: "2rem" }}
+                  ></div>
+                  <Link
+                    type="button"
+                    className="btn w-100 text-start text-teal fw-bold"
+                    onClick={() => handleProceedToCheckout(address)}
+                  >
+                    Use this address
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Modal for Add/Edit Address */}
         <div
           className="modal fade"
           id="userAddressModal"
@@ -107,7 +223,7 @@ const UserAddress = () => {
                   className="modal-title text-secondary fw-bold text-uppercase"
                   id="userAddressModalLabel"
                 >
-                  Edit Address
+                  {isEditing ? "Edit Address" : "Add Address"}
                 </h6>
                 <button
                   type="button"
@@ -117,213 +233,10 @@ const UserAddress = () => {
                 ></button>
               </div>
               <div className="modal-body">
-                <form onSubmit={submitHandler}>
-                  <div className="mb-3">
-                    <label
-                      htmlFor="name"
-                      className="form-label text-secondary small"
-                    >
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control fw-bold text-capitalize"
-                      id="name"
-                      placeholder="Enter your full name"
-                      value={formData.name || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label
-                      htmlFor="mobileNumber"
-                      className="form-label text-secondary small"
-                    >
-                      Mobile Number *
-                    </label>
-                    <input
-                      type="tel"
-                      className="form-control fw-bold "
-                      id="mobileNumber"
-                      placeholder="Enter your mobile number"
-                      value={formData.mobileNumber || ""}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          mobileNumber: e.target.value,
-                        })
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="row mb-3 g-3">
-                    <div className="col-lg-6">
-                      <label
-                        htmlFor="pincode"
-                        className="form-label  text-secondary small"
-                      >
-                        Pincode *
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control fw-bold"
-                        id="pincode"
-                        pattern="\d{6}"
-                        maxLength={6}
-                        minLength={6}
-                        value={formData.pincode || ""}
-                        onChange={(e) =>
-                          setFormData({ ...formData, pincode: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-                    <div className="col-lg-6">
-                      <label
-                        htmlFor="state"
-                        className="form-label  text-secondary small"
-                      >
-                        State *
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control fw-bold text-capitalize"
-                        id="state"
-                        value={formData.state || ""}
-                        onChange={(e) =>
-                          setFormData({ ...formData, state: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-3">
-                    <label
-                      htmlFor="address"
-                      className="form-label text-secondary small"
-                    >
-                      Address (House No, Building, Street, Area) *
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control fw-bold text-capitalize"
-                      id="address"
-                      value={formData.address || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, address: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="row mb-3 g-3">
-                    <div className="col-lg-6">
-                      <label
-                        htmlFor="town"
-                        className="form-label  text-secondary small"
-                      >
-                        Locality/ Town *
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control fw-bold text-capitalize"
-                        id="town"
-                        value={formData.town || ""}
-                        onChange={(e) =>
-                          setFormData({ ...formData, town: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="col-lg-6">
-                      <label
-                        htmlFor="district"
-                        className="form-label  text-secondary small"
-                      >
-                        City/ District *
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control fw-bold text-capitalize"
-                        id="district"
-                        value={formData.district || ""}
-                        onChange={(e) =>
-                          setFormData({ ...formData, district: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-3">
-                    <label
-                      htmlFor="typeOfAddress"
-                      className="form-label text-secondary small"
-                    >
-                      Type of Address *
-                    </label>
-                    <br />
-                    <div className="form-check form-check-inline">
-                      <input
-                        type="radio"
-                        className="form-check-input"
-                        id="home"
-                        name="typeOfAddress"
-                        value="home"
-                        checked={formData.typeOfAddress === "home"}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            typeOfAddress: e.target.value,
-                          })
-                        }
-                      />
-                      <label
-                        className="form-check-label text-secondary"
-                        htmlFor="home"
-                      >
-                        Home
-                      </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        type="radio"
-                        className="form-check-input"
-                        id="office"
-                        name="typeOfAddress"
-                        value="office"
-                        checked={formData.typeOfAddress === "office"}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            typeOfAddress: e.target.value,
-                          })
-                        }
-                      />
-                      <label
-                        className="form-check-label text-secondary"
-                        htmlFor="office"
-                      >
-                        Office
-                      </label>
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="btn btn-pink w-25 position-absolute  "
-                    style={{ bottom: "10px", right: "15px" }}
-                    data-bs-dismiss="modal"
-                  >
-                    Save
-                  </button>
-                </form>
+                <AddEditUserAddressForm
+                  address={selectedAddress}
+                  isEditing={isEditing}
+                />
               </div>
             </div>
           </div>

@@ -60,7 +60,10 @@ const ProductCard = ({ product, isLoading }) => {
         toastId: "error",
       });
     }
-  }, [message, isSuccess, isError, wMessage, wSuccess, wError]);
+    dispatch(cartResetState());
+    dispatch(wishlistResetState());
+  }, [message, isSuccess, isError, wMessage, wSuccess, wError, dispatch]);
+
   useEffect(() => {
     dispatch(cartResetState());
     dispatch(wishlistResetState());

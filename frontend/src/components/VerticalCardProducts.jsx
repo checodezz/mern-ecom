@@ -78,13 +78,14 @@ const VerticalCardProducts = ({ subCategory, heading }) => {
                 to={`/products/details/${product._id}`}
               >
                 <div
-                  className="image-container col-12 py-3 bg-secondary-subtle d-flex justify-content-center align-items-center"
+                  className="image-container col-12 py-3 d-flex justify-content-center align-items-center"
                   style={{ height: "12rem" }}
                 >
                   <img
                     src={product?.images[0]}
-                    className="img-fluid rounded-start product-image"
+                    className="img-fluid my-2 rounded-start product-image w-100"
                     alt={product?.name}
+                    style={{ height: "11rem" }}
                   />
                 </div>
                 <div className="card-body">

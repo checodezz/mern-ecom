@@ -95,6 +95,22 @@ export const deleteCartItem = createAsyncThunk(
   }
 );
 
+export const clearCart = createAsyncThunk(
+  "cart/clear-cart",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_DOMAIN}/clear-cart`, {
+        withCredentials: true,
+      });
+      console.log(response.data);
+      await thunkAPI.dispatch(getCountCartItems());
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
@@ -119,21 +135,21 @@ const cartSlice = createSlice({
       state.message = "";
     },
     calculateTotalQuantity: (state) => {
-      state.totalQuantity = state?.cartItems.reduce(
+      state.totalQuantity = state?.cartItems?.reduce(
         (acc, curr) => acc + curr?.quantity,
         0
       );
     },
     calculateTotalPrice: (state) => {
-      state.totalPrice = state?.cartItems.reduce(
+      state.totalPrice = state?.cartItems?.reduce(
         (acc, curr) => acc + curr?.productId?.sellingPrice * curr?.quantity,
         0
       );
-      console.log(state.totalPrice);
+      // console.log(state.totalPrice);
     },
     calculateTotalMRP: (state) => {
-      state.totalMRP = state.cartItems.reduce(
-        (acc, curr) => acc + curr?.productId.price,
+      state.totalMRP = state?.cartItems?.reduce(
+        (acc, curr) => acc + curr?.productId?.price,
         0
       );
     },
@@ -187,6 +203,31 @@ const cartSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(updateCartItem.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteCartItem.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCartItem.fulfilled, (state, action) => {
+        // console.log(action.payload?.message);
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload?.message;
+      })
+      .addCase(deleteCartItem.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload?.message;
+      })
+      .addCase(clearCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(clearCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // state.totalCartItems = 0;
+      })
+      .addCase(clearCart.rejected, (state) => {
         state.isLoading = false;
       });
   },

@@ -11,12 +11,6 @@ async function editUserInfoController(req, res) {
       altMobileNumber,
       gender,
       birthday,
-      pincode,
-      state,
-      address,
-      town,
-      district,
-      typeOfAddress,
     } = req.body;
 
     const payload = {
@@ -26,12 +20,6 @@ async function editUserInfoController(req, res) {
       ...(altMobileNumber && { altMobileNumber: altMobileNumber }),
       ...(gender && { gender: gender }),
       ...(birthday && { birthday: birthday }),
-      ...(pincode && { pincode: pincode }),
-      ...(state && { state: state }),
-      ...(town && { town: town }),
-      ...(address && { address: address }),
-      ...(district && { district: district }),
-      ...(typeOfAddress && { typeOfAddress: typeOfAddress }),
     };
 
     const user = await userModel.findById(sessionUser);
