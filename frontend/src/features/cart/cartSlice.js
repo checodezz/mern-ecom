@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
+import { getAuthHeaders } from "../../utils/getAuthHeaders";
 
 // add product to cart
 export const addItemToCart = createAsyncThunk(
@@ -13,7 +14,7 @@ export const addItemToCart = createAsyncThunk(
           productId,
         },
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       return response.data;
@@ -28,7 +29,7 @@ export const getCountCartItems = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/cart/count-items`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       return response.data;
     } catch (error) {
@@ -42,7 +43,7 @@ export const getCartItems = createAsyncThunk(
   async (productId, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/cart/items`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       return response.data;
     } catch (error) {
@@ -63,7 +64,7 @@ export const updateCartItem = createAsyncThunk(
           quantity,
         },
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       return response.data;
@@ -83,7 +84,7 @@ export const deleteCartItem = createAsyncThunk(
           cartItemId,
         },
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       await thunkAPI.dispatch(getCartItems());
@@ -100,7 +101,7 @@ export const clearCart = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/clear-cart`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       console.log(response.data);
       await thunkAPI.dispatch(getCountCartItems());

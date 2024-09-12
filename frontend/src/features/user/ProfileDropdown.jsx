@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHeart, FaRegCircleUser, FaRegHeart } from "react-icons/fa6";
+import { FaRegCircleUser, FaRegHeart } from "react-icons/fa6";
 import { logoutAsync } from "../auth/authSlice";
-import { fetchUserDetails } from "./userSlice";
+import { clearUserDetails } from "./userSlice";
 
 import { FaRegUser } from "react-icons/fa6";
 import { FiLogOut, FiMapPin } from "react-icons/fi";
@@ -112,11 +112,19 @@ const ProfileDropdown = () => {
                 <Link
                   className="dropdown-item d-flex justify-content-start align-items-center"
                   type="button"
-                  onClick={() => {
-                    dispatch(logoutAsync(user._id)).then(() => {
-                      dispatch(fetchUserDetails(null));
-                      navigate("/");
-                    });
+                  onClick={async () => {
+                    try {
+                      // Wait for logout to complete
+                      await dispatch(logoutAsync());
+
+                      // Now fetch user details with null to clear the data
+                      dispatch(clearUserDetails());
+
+                      // Navigate to the homepage
+                      navigate("/login");
+                    } catch (error) {
+                      console.error("Logout failed: ", error);
+                    }
                   }}
                 >
                   <div className="me-1 ">

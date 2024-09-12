@@ -12,11 +12,13 @@ const cartRouter = require("./routes/cartRoutes.js");
 const orderRouter = require("./routes/orderRoutes.js");
 
 const app = express();
+
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
+
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://arp-mern-ecom.netlify.app"],
+  origin: allowedOrigins,
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
 };
 
 app.use(express.json());

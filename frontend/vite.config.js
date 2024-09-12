@@ -7,10 +7,4 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["js-big-decimal"],
   },
-  server: {
-    historyApiFallback: true,
-  },
-  build: {
-    outDir: "dist", // Ensure this matches the directory you set in Netlify
-  },
 });

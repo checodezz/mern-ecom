@@ -5,7 +5,6 @@ const userSignUpController = require("../controller/user/userSignUp");
 const userSignInController = require("../controller/user/userSignIn");
 const userDetailsController = require("../controller/user/userDetails");
 const authToken = require("../middleware/authToken");
-const userLogoutController = require("../controller/user/userLogout");
 const getWishlistProductsController = require("../controller/wishlist/getWishlistProducts");
 const addProductToWishlistController = require("../controller/wishlist/addProductToWishlist");
 const countWishlistProducts = require("../controller/wishlist/countWishlistProducts");
@@ -19,7 +18,6 @@ const deleteUserAddressController = require("../controller/user/deleteUserAddres
 router.post("/signUp", userSignUpController);
 router.post("/signin", userSignInController);
 router.get("/user-details", authToken, userDetailsController);
-router.get("/logout", userLogoutController);
 
 // update user profile
 router.post("/edit/user-profile", authToken, editUserInfoController);

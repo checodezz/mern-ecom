@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
 import API_DOMAIN from "../../config";
 
 // Handle signup action
@@ -9,10 +8,12 @@ export const signupAsync = createAsyncThunk(
   async (newUserData, thunkAPI) => {
     try {
       const response = await axios.post(`${API_DOMAIN}/signup`, newUserData);
-      console.log(response.data);
+      localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(
+        error.response ? error.response.data : { message: "Network Error" }
+      );
     }
   }
 );
@@ -22,17 +23,13 @@ export const signinAsync = createAsyncThunk(
   "auth/signin",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`${API_DOMAIN}/signin`, formData, {
-        withCredentials: true,
-      });
+      const response = await axios.post(`${API_DOMAIN}/signin`, formData);
+      localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error) {
-      // console.log("Error during signin:", error.response);
-      if (error.response) {
-        return thunkAPI.rejectWithValue(error.response.data);
-      } else {
-        return thunkAPI.rejectWithValue({ message: "Network Error" });
-      }
+      return thunkAPI.rejectWithValue(
+        error.response ? error.response.data : { message: "Network Error" }
+      );
     }
   }
 );
@@ -42,12 +39,10 @@ export const logoutAsync = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`${API_DOMAIN}/logout`, {
-        withCredentials: true,
-      });
-      return response.data;
+      localStorage.removeItem("token");
+      return { message: "Logged out successfully." };
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue({ message: "Error logging out" });
     }
   }
 );
@@ -55,6 +50,7 @@ export const logoutAsync = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
+    token: localStorage.getItem("token") || null,
     isLoading: false,
     isError: false,
     isSuccess: false,
@@ -76,6 +72,7 @@ const authSlice = createSlice({
       .addCase(signupAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.token = action.payload.token;
         state.message = action.payload.message || "Signup successful!";
       })
       .addCase(signupAsync.rejected, (state, action) => {
@@ -90,7 +87,7 @@ const authSlice = createSlice({
       .addCase(signinAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.isError = false;
+        state.token = action.payload.token;
         state.message = action.payload.message || "Signin successful!";
       })
       .addCase(signinAsync.rejected, (state, action) => {
@@ -103,11 +100,10 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(logoutAsync.fulfilled, (state, action) => {
-        console.log(action.payload.message);
         state.isLoading = false;
         state.isSuccess = true;
-        state.message =
-          action.payload.message || "Failed to logout. Please try again.";
+        state.token = null; // Clear the token
+        state.message = action.payload.message || "Logged out successfully.";
       })
       .addCase(logoutAsync.rejected, (state, action) => {
         state.isLoading = false;

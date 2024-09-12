@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
+import { getAuthHeaders } from "../../utils/getAuthHeaders";
 
 // fetch user details
 export const fetchUserDetails = createAsyncThunk(
@@ -8,8 +9,9 @@ export const fetchUserDetails = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/user-details`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -25,7 +27,7 @@ export const editUserProfile = createAsyncThunk(
         `${API_DOMAIN}/edit/user-profile`,
         data,
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       return response.data;
@@ -125,6 +127,9 @@ const userSlice = createSlice({
     setCheckoutAddress: (state, action) => {
       state.checkoutAddress = action.payload;
     },
+    clearUserDetails: (state) => {
+      state.user = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -221,5 +226,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { userResetState, setCheckoutAddress } = userSlice.actions;
+export const { userResetState, setCheckoutAddress, clearUserDetails } =
+  userSlice.actions;
 export default userSlice.reducer;

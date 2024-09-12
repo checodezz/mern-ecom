@@ -1,5 +1,5 @@
-const API_DOMAIN = `${import.meta.env.VITE_APP_API_URL}/api`;
-// console.log(API_DOMAIN);
+const API_DOMAIN = import.meta.env.VITE_APP_API_URL + "api";
+// console.log(import.meta.env.VITE_APP_API_URL, API_DOMAIN);
 
 // Define user roles (if needed for your logic)
 export const ROLE = {
