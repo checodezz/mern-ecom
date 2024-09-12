@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
+import { getCountCartItems } from "../cart/cartSlice";
+import { getCountWishlistProducts } from "../wishlist/wishlistSlice";
 
 // Handle signup action
 export const signupAsync = createAsyncThunk(
@@ -25,6 +27,8 @@ export const signinAsync = createAsyncThunk(
     try {
       const response = await axios.post(`${API_DOMAIN}/signin`, formData);
       localStorage.setItem("token", response.data.token);
+      await thunkAPI.dispatch(getCountCartItems());
+      await thunkAPI.dispatch(getCountWishlistProducts());
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(

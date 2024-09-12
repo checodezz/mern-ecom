@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
+import { getAuthHeaders } from "../../utils/getAuthHeaders";
 
 // fetch all users
 export const fetchAllUsers = createAsyncThunk(
@@ -8,7 +9,7 @@ export const fetchAllUsers = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/all-user`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       return response.data;
     } catch (error) {
@@ -23,8 +24,9 @@ export const updateUser = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.post(`${API_DOMAIN}/update-user`, data, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
+      await thunkAPI.dispatch(fetchAllUsers());
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -33,29 +35,42 @@ export const updateUser = createAsyncThunk(
 );
 
 // add product
-export const addProduct = createAsyncThunk("admin/add-product", async (newProduct) => {
-  try {
-    const response = await axios.post(`${API_DOMAIN}/upload-product`, newProduct, {
-      withCredentials: true
-    })
-    return response.data
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data);
+export const addProduct = createAsyncThunk(
+  "admin/add-product",
+  async (newProduct, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${API_DOMAIN}/upload-product`,
+        newProduct,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
-})
+);
 
 // edit product
-export const editProduct = createAsyncThunk("admin/edit-product", async(productData) => {
-  try{
-    const response = await axios.post(`${API_DOMAIN}/update-product`, productData, {
-      withCredentials: true
-    })
-    return response.data
-  }catch(error){
-    return thunkAPI.rejectWithValue(error.response.data);
+export const editProduct = createAsyncThunk(
+  "admin/edit-product",
+  async (productData, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${API_DOMAIN}/update-product`,
+        productData,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
-})
-
+);
 
 const adminSlice = createSlice({
   name: "admin",
@@ -100,31 +115,38 @@ const adminSlice = createSlice({
         state.isSuccess = false;
         state.isError = true;
         state.message = action.payload?.message || "Failed to update User";
-      }).addCase(addProduct.pending, (state) => {
-        state.isLoading = true
-      }).addCase(addProduct.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload.message || "Product added successfully."
-        state.allProducts.push(action.payload.data)
-      }).addCase(addProduct.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.payload.message || "Failed to add product."
-      }).addCase(editProduct.pending, (state) => {
-        state.isLoading = true;
-      }).addCase(editProduct.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload?.message || "Product updated successfully."
-      }).addCase(editProduct.rejected, (state, action) => {
-        state.isSuccess = false;
-        state.isError = true;
-        state.message = action.payload?.message
       })
+      .addCase(addProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.message || "Product added successfully.";
+        state.allProducts.push(action.payload.data);
+      })
+      .addCase(addProduct.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.message || "Failed to add product.";
+      })
+      .addCase(editProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message =
+          action.payload?.message || "Product updated successfully.";
+      })
+      .addCase(editProduct.rejected, (state, action) => {
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload?.message;
+      });
   },
 });
 
-export const {resetState} = adminSlice.actions;
+export const { resetState } = adminSlice.actions;
 
 export const adminReducer = adminSlice.reducer;

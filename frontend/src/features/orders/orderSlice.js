@@ -1,21 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
+import { getAuthHeaders } from "../../utils/getAuthHeaders";
 
 // add product to cart
 export const addOrder = createAsyncThunk(
   "order/addOrder",
   async (orderData, thunkAPI) => {
     try {
-      const response = await axios.post(
-        `${API_DOMAIN}/order`,
-
-        orderData,
-
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${API_DOMAIN}/order`, orderData, {
+        headers: getAuthHeaders(),
+      });
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -29,7 +24,7 @@ export const getAllOrders = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/orders`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       // console.log(response.data);
       return response.data;
@@ -44,7 +39,7 @@ export const getOrderDetails = createAsyncThunk(
   async (orderId, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/orders/${orderId}`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       console.log(response.data);
       return response.data;

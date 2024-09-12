@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
+import { getAuthHeaders } from "../../utils/getAuthHeaders";
 
 export const getWishlistProducts = createAsyncThunk(
   "wishlist/getWishlistProducts",
   async (productId, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/get/wishlist`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       // console.log(response.data);
       return response.data;
@@ -28,7 +29,7 @@ export const addProductToWishlist = createAsyncThunk(
           productId,
         },
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       await thunkAPI.dispatch(getCountWishlistProducts());
@@ -44,7 +45,7 @@ export const getCountWishlistProducts = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/wishlist/count-items`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       return response.data;
     } catch (error) {
@@ -63,7 +64,7 @@ export const removeFromWishlistProduct = createAsyncThunk(
           productId,
         },
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       await thunkAPI.dispatch(getWishlistProducts());

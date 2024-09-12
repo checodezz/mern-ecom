@@ -87,9 +87,13 @@ const CategoryForm = ({ categoryToEdit }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(message);
+      toast.success(message, {
+        toastId: "success",
+      });
     } else if (isError) {
-      toast.error(message);
+      toast.error(message, {
+        toastId: "error",
+      });
     }
     dispatch(categoryResetState());
   }, [dispatch, message, isSuccess, isError]);

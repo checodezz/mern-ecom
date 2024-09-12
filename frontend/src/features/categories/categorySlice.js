@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
+import { getAuthHeaders } from "../../utils/getAuthHeaders";
 
 // get categories
 export const fetchAllCategories = createAsyncThunk(
@@ -24,7 +25,7 @@ export const addCategory = createAsyncThunk(
         `${API_DOMAIN}/add-category`,
         newCategory,
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       return response.data;
@@ -43,7 +44,7 @@ export const editCategory = createAsyncThunk(
         `${API_DOMAIN}/update-category`,
         categoryData,
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       console.log(response.data);
@@ -62,7 +63,7 @@ export const deleteCategory = createAsyncThunk(
       const response = await axios.delete(
         `${API_DOMAIN}/delete-category/${categoryId}`,
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       return response.data;

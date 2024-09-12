@@ -42,7 +42,7 @@ export const addEditUserAddress = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.post(`${API_DOMAIN}/user/address`, data, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       console.log(data);
       return response.data;
@@ -57,7 +57,7 @@ export const fetchUserAddresses = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_DOMAIN}/user/addresses`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       // console.log(response.data);
       return response.data;
@@ -75,7 +75,7 @@ export const deleteUserAccount = createAsyncThunk(
         `${API_DOMAIN}/delete/user-account`,
         userId,
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       return response.data;
@@ -93,7 +93,7 @@ export const deleteUserAddress = createAsyncThunk(
         `${API_DOMAIN}/delete/user/address`,
         { addressId },
         {
-          withCredentials: true,
+          headers: getAuthHeaders(),
         }
       );
       // console.log(response.data);

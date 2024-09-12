@@ -224,7 +224,7 @@ const cartSlice = createSlice({
       .addCase(clearCart.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(clearCart.fulfilled, (state, action) => {
+      .addCase(clearCart.fulfilled, (state) => {
         state.isLoading = false;
         // state.totalCartItems = 0;
       })

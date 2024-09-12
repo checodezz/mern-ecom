@@ -13,10 +13,12 @@ const HomePage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(message);
+      toast.success(message, {
+        toastId: "success",
+      });
     } else if (isError) {
       toast.error(message, {
-        style: { backgroundColor: "#F44336", color: "white" },
+        toastId: "error",
       });
     }
     dispatch(cartResetState());

@@ -11,10 +11,14 @@ const ChangeUserRole = ({ userId, name, email, role }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(message);
+      toast.success(message, {
+        toastId: "success",
+      });
       fetchAllUsers();
     } else if (isError) {
-      toast.error(message);
+      toast.error(message, {
+        toastId: "error",
+      });
     }
   }, [dispatch, message, isSuccess, isError]);
 

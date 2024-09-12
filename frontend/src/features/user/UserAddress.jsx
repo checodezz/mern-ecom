@@ -31,9 +31,13 @@ const UserAddress = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(message);
+      toast.success(message, {
+        toastId: "success",
+      });
     } else if (isError) {
-      toast.error(message);
+      toast.error(message, {
+        toastId: "error",
+      });
     }
     dispatch(userResetState());
   }, [message, isSuccess, isError, dispatch]);

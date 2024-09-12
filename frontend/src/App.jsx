@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDetails } from "./features/user/userSlice";
 import { authResetState } from "./features/auth/authSlice";
+import { getCartItems } from "./features/cart/cartSlice";
+import { getCountWishlistProducts } from "./features/wishlist/wishlistSlice";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -19,6 +21,7 @@ const App = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(message, {
+        toastId: "success",
         autoClose: 2000,
         position: "bottom-right",
         onClose: () => {
@@ -27,6 +30,7 @@ const App = () => {
       });
     } else if (isError) {
       toast.error(message, {
+        toastId: "error",
         autoClose: 2000,
         position: "bottom-right",
         onOpen: () => {
@@ -50,13 +54,15 @@ const App = () => {
   // Initial fetch of user details
   useEffect(() => {
     dispatch(fetchUserDetails());
+    dispatch(getCartItems());
+    dispatch(getCountWishlistProducts());
   }, [dispatch]);
 
   return (
     <>
       <ToastContainer />
       <Header key={key} /> {/* Optional key to force re-render */}
-      <main className="container-fluid px-4 my-4">
+      <main>
         <Outlet />
       </main>
       <Footer />

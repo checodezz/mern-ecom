@@ -1,7 +1,6 @@
-import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_DOMAIN from "../../config";
-import { calculateMinPrice } from "../../utils/helpers";
 
 export const fetchAllProducts = createAsyncThunk(
   "products/get-products",
