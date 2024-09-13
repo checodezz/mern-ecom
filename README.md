@@ -24,17 +24,19 @@ npm run dev
 
 ## Features
 
-✨ Home Page - Showcase featured products, categories, and offers
-🔍 Product Listing Page - Browse products by categories, view details, and compare prices
-🔧 Filter and Sort Products - Filter by categories, price, rating, and more
-🔍 Search Functionality - Search for products quickly and easily
-📦 Product Details Page - Detailed information and reviews of each product
-🛒 Cart Management - Add, update, and remove items from the cart and checkout
-❤️ Wishlist Management - Save favorite products for later
-📝 Order Management - view previous orders
-🏠 Address Management - Add and manage shipping addresses
-💳 Payment Gateway Integration - Seamless payment experience with multiple options
-🔑 Authentication: - 📝 User Signup - 🔑 User Login - 🚪 Logout - Securely log out of the system
+- ✨ Engaging Home Page: Display stunning banners, featured products by subcategories, and showcase products in horizontal and vertical card layouts for easy browsing.
+- 🔍 Product Listing Page: Browse through a wide variety of products organized by categories, compare features, and view detailed pricing information.
+- 🔧 Filtering and Sorting: Effortlessly filter products by categories, price, rating, and other attributes to find exactly what you're looking for.
+- 🔍 Smart Search: Quickly search for specific products with an intuitive search bar, making shopping faster and easier.
+- 📦 Detailed Product Information: Get in-depth details on individual products and similar products
+- 🛒 Cart Management: Add items to your cart, update quantities, or remove products, with a seamless checkout experience.
+- ❤️ Wishlist Management: Save your favorite items to the wishlist and revisit them later for future purchases.
+- 📝 Order History: Keep track of your previous orders, view order details, and reorder products with ease.
+- 🏠 Address Management: Easily add, edit, and manage multiple shipping addresses for a hassle-free checkout process.
+- 💳 Payment Gateway Integration: Enjoy a secure and smooth payment experience with support for multiple payment options.
+- 🔑 User Authentication: Sign up, log in, and securely log out to protect your account and personal information.
+- Admin Panel: Empower administrators to add, edit, and manage products, categories, and user roles with full control over the system.
+- Personalized User Profile: View and manage your personal profile, shipping addresses, orders, and even delete your account when needed.
 
 ## Built With
 
