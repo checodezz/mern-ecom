@@ -13,10 +13,8 @@ const orderRouter = require("./routes/orderRoutes.js");
 
 const app = express();
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
-
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: process.env.ALLOWED_ORIGINS,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
 };
