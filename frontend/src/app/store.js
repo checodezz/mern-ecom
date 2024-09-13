@@ -19,6 +19,8 @@ const store = configureStore({
     wishlist: wishlistReducer,
     orders: orderReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
 
 export default store;
