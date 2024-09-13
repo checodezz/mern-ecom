@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FaBars, FaRegCircleUser } from "react-icons/fa6";
 import { logoutAsync } from "../features/auth/authSlice";
-import { fetchUserDetails } from "../features/user/userSlice";
+import { clearUserDetails, fetchUserDetails } from "../features/user/userSlice";
 import { FaTimes } from "react-icons/fa";
 
 const UserProfilePage = () => {
@@ -14,6 +14,21 @@ const UserProfilePage = () => {
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Wait for logout to complete
+      await dispatch(logoutAsync());
+
+      // Now fetch user details with null to clear the data
+      dispatch(clearUserDetails());
+
+      // Navigate to the homepage
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed: ", error);
+    }
   };
 
   return (
@@ -123,12 +138,7 @@ const UserProfilePage = () => {
           <Link
             className="btn btn-pink fw-semibold w-100"
             type="button"
-            onClick={() => {
-              dispatch(logoutAsync(user._id)).then(() => {
-                dispatch(fetchUserDetails(null));
-                navigate("/");
-              });
-            }}
+            onClick={handleLogout}
           >
             Logout
           </Link>

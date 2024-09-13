@@ -122,97 +122,92 @@ const ProductCard = ({ product, isLoading }) => {
                 }}
               />
             </div>
-
-            <div className="card-body pb-0">
-              <div className="d-flex justify-content-between">
-                <div>
-                  <h6
-                    className="card-title text-truncate"
-                    style={{ maxWidth: "12rem" }}
-                  >
-                    {product?.name}
-                  </h6>
-                </div>
-              </div>
-
-              {/* Price */}
-              <div
-                className="d-flex justify-content-start align-items-center"
-                style={{ fontSize: "15px" }}
-              >
-                <p className="fw-semibold me-1 mb-0">
-                  {displayINRCurrency(product?.sellingPrice)}
-                </p>
-                <p className="text-decoration-line-through text-secondary me-2 mb-0">
-                  {displayINRCurrency(product?.price)}
-                </p>
-
-                <p className="text-success bg-lightgreen fw-semibold px-1 mb-0">
-                  {calculateDiscount(product?.price, product?.sellingPrice)}%
-                  off
-                </p>
-              </div>
-
-              {/* Rating */}
-              <div className="d-flex justify-content-start align-items-center">
-                <span className="me-1">{product?.rating}</span>
-
-                <div className="mb-0 pb-0" style={{ color: "#ffd700" }}>
-                  <FaStar />
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="row"
-              style={{
-                marginLeft: "0.4px",
-                marginRight: "0.4px",
-                height: "45px",
-              }}
-            >
-              <div className="col-3 center-content border-top">
-                {localIsWishlisted ? (
-                  <button
-                    type="button"
-                    className="btn text-pink"
-                    onClick={(e) => handleAddToWishList(e, product?._id)}
-                  >
-                    <FaHeart size={25} />
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="btn text-dark"
-                    onClick={(e) => handleAddToWishList(e, product?._id)}
-                  >
-                    <FaRegHeart size={25} />
-                  </button>
-                )}
-              </div>
-              <div
-                className="col-9 center-content bg-pink"
-                style={{ borderRadius: "0 0 5px 0" }}
-              >
-                {localIsInCart ? (
-                  <Link
-                    className="btn  text-light text-decoration-none fw-semibold"
-                    to="/cart"
-                  >
-                    View Cart
-                  </Link>
-                ) : (
-                  <Link
-                    type="button"
-                    className="btn text-light text-decoration-none fw-semibold"
-                    onClick={(e) => handleAddToCart(e, product?._id)}
-                  >
-                    Add to Cart
-                  </Link>
-                )}
-              </div>
-            </div>
           </Link>
+
+          <div className="card-body pb-0">
+            <div className="d-flex justify-content-between">
+              <div>
+                <h6
+                  className="card-title text-truncate"
+                  style={{ maxWidth: "12rem" }}
+                >
+                  {product?.name}
+                </h6>
+              </div>
+            </div>
+
+            {/* Price */}
+            <div
+              className="d-flex justify-content-start align-items-center"
+              style={{ fontSize: "15px" }}
+            >
+              <p className="fw-semibold me-1 mb-0">
+                {displayINRCurrency(product?.sellingPrice)}
+              </p>
+              <p className="text-decoration-line-through text-secondary me-2 mb-0">
+                {displayINRCurrency(product?.price)}
+              </p>
+
+              <p className="text-success bg-lightgreen fw-semibold px-1 mb-0">
+                {calculateDiscount(product?.price, product?.sellingPrice)}% off
+              </p>
+            </div>
+
+            {/* Rating */}
+            <div className="d-flex justify-content-start align-items-center">
+              <span className="me-1">{product?.rating}</span>
+
+              <div className="mb-0 pb-0" style={{ color: "#ffd700" }}>
+                <FaStar />
+              </div>
+            </div>
+          </div>
+
+          <div
+            className="row"
+            style={{
+              marginLeft: "0.4px",
+              marginRight: "0.4px",
+              height: "45px",
+            }}
+          >
+            <div className="col-3 center-content border-top">
+              <button
+                type="button"
+                className={`btn ${
+                  localIsWishlisted ? "text-pink" : "text-dark"
+                } w-100`}
+                onClick={(e) => handleAddToWishList(e, product?._id)}
+              >
+                {localIsWishlisted ? (
+                  <FaHeart size={25} />
+                ) : (
+                  <FaRegHeart size={25} />
+                )}
+              </button>
+            </div>
+            <div
+              className="col-9 center-content bg-pink"
+              style={{ borderRadius: "0 0 5px 0" }}
+            >
+              {localIsInCart ? (
+                <Link
+                  className="btn  text-light text-decoration-none fw-semibold"
+                  to="/cart"
+                >
+                  View Cart
+                </Link>
+              ) : (
+                <Link
+                  type="button"
+                  className="btn text-light text-decoration-none fw-semibold"
+                  onClick={(e) => handleAddToCart(e, product?._id)}
+                >
+                  Add to Cart
+                </Link>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </>

@@ -103,7 +103,7 @@ export const clearCart = createAsyncThunk(
       const response = await axios.get(`${API_DOMAIN}/clear-cart`, {
         headers: getAuthHeaders(),
       });
-      console.log(response.data);
+      // console.log(response.data);
       await thunkAPI.dispatch(getCountCartItems());
       return response.data;
     } catch (error) {

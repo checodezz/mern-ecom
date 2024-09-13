@@ -90,9 +90,7 @@ const ProductFilterForm = ({ filteredProducts }) => {
             value="asc"
             id="asc"
             name="sortByPrice"
-            checked={
-              sortByPrice === "asc" || params.sortByPrice === sortByPrice
-            }
+            checked={sortByPrice === "asc" || params.sortByPrice === "asc"}
             onChange={(e) => {
               handleUrlChange("sortByPrice", e.target.value);
               dispatch(setFiltersSortByPrice(e.target.value));
@@ -110,9 +108,7 @@ const ProductFilterForm = ({ filteredProducts }) => {
             value="desc"
             id="desc"
             name="sortByPrice"
-            checked={
-              sortByPrice === "desc" || params.sortByPrice === sortByPrice
-            }
+            checked={sortByPrice === "desc" || params.sortByPrice === "desc"}
             onChange={(e) => {
               handleUrlChange("sortByPrice", e.target.value);
               dispatch(setFiltersSortByPrice(e.target.value));
@@ -177,7 +173,7 @@ const ProductFilterForm = ({ filteredProducts }) => {
               value={el}
               id={`rating${el}AndAbove`}
               name="rating"
-              checked={rating == el || params.rating == rating}
+              checked={rating == el || params.rating == el}
               onChange={(e) => {
                 handleUrlChange("rating", e.target.value);
                 dispatch(setFiltersRating(e.target.value));

@@ -23,6 +23,21 @@ const ProfileDropdown = () => {
     }
   }, [dispatch, isSuccess, message, navigate]);
 
+  const handleLogout = async () => {
+    try {
+      // Wait for logout to complete
+      await dispatch(logoutAsync());
+
+      // Now fetch user details with null to clear the data
+      dispatch(clearUserDetails());
+
+      // Navigate to the homepage
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed: ", error);
+    }
+  };
+
   return (
     <>
       {user ? (
@@ -112,20 +127,7 @@ const ProfileDropdown = () => {
                 <Link
                   className="dropdown-item d-flex justify-content-start align-items-center"
                   type="button"
-                  onClick={async () => {
-                    try {
-                      // Wait for logout to complete
-                      await dispatch(logoutAsync());
-
-                      // Now fetch user details with null to clear the data
-                      dispatch(clearUserDetails());
-
-                      // Navigate to the homepage
-                      navigate("/login");
-                    } catch (error) {
-                      console.error("Logout failed: ", error);
-                    }
-                  }}
+                  onClick={handleLogout}
                 >
                   <div className="me-1 ">
                     <FiLogOut />

@@ -69,7 +69,7 @@ export const removeFromWishlistProduct = createAsyncThunk(
       );
       await thunkAPI.dispatch(getWishlistProducts());
       await thunkAPI.dispatch(getCountWishlistProducts());
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);

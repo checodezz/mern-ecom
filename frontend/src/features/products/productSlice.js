@@ -106,6 +106,8 @@ const productSlice = createSlice({
     setFiltersSortByPrice: (state, action) => {
       const sortingMethod = action.payload;
       state.filters.sortByPrice = sortingMethod;
+      console.log(state.filters.sortByPrice);
+
       const products = [...state.filteredProducts];
       const sortedProducts = products.sort((a, b) =>
         sortingMethod === "asc"

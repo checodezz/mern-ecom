@@ -86,12 +86,12 @@ const LoginPage = () => {
               </div>
             </div>
           </div>
-          <Link
+          {/* <Link
             to={"/forgot-password"}
             className="d-flex justify-content-end text-decoration-none "
           >
             Forgot Password ?
-          </Link>
+          </Link> */}
           <button className="btn btn-pink mt-2 mb-4 w-100 rounded-pill ">
             Login
           </button>
