@@ -25,7 +25,7 @@ const CartSummary = ({ cartItems, isLoading }) => {
   // console.log(cartItems);
 
   const handlePayment = () => {
-    if (checkoutAddress === null) {
+    if (checkoutAddress === null || checkoutAddress === undefined) {
       toast.error("Please add an address before proceeding with payment.");
       return; // Exit the function to prevent payment initialization
     }
