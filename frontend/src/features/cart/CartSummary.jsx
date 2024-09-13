@@ -12,6 +12,7 @@ import {
 } from "./cartSlice";
 import CartSummaryLoader from "./CartSummaryLoader";
 import { addOrder } from "../orders/orderSlice";
+import { toast } from "react-toastify";
 
 const CartSummary = ({ cartItems, isLoading }) => {
   const dispatch = useDispatch();
@@ -24,6 +25,11 @@ const CartSummary = ({ cartItems, isLoading }) => {
   // console.log(cartItems);
 
   const handlePayment = () => {
+    if (checkoutAddress === null) {
+      toast.error("Please add an address before proceeding with payment.");
+      return; // Exit the function to prevent payment initialization
+    }
+
     var options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       key_secret: import.meta.env.VITE_RAZORPAY_SECRET,

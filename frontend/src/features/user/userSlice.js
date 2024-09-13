@@ -44,7 +44,7 @@ export const addEditUserAddress = createAsyncThunk(
       const response = await axios.post(`${API_DOMAIN}/user/address`, data, {
         headers: getAuthHeaders(),
       });
-      console.log(data);
+      // console.log(data);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -184,7 +184,6 @@ const userSlice = createSlice({
       .addCase(fetchUserAddresses.fulfilled, (state, action) => {
         state.isLoading = false;
         state.addresses = action.payload.data;
-
         // Separate default address from other addresses
         state.defaultAddress = action.payload?.data.find(
           (address) => address.isDefault

@@ -13,7 +13,7 @@ async function authToken(req, res, next) {
     }
 
     const token = authHeader.split(" ")[1]; // Extract token from the Bearer header
-    console.log(token);
+    // console.log(token);
 
     if (!token) {
       return res.status(400).json({

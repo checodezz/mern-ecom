@@ -23,11 +23,13 @@ const UserAddress = () => {
     otherAddresses,
   } = useSelector((state) => state.user);
 
+  // console.log(addresses);
+
   const navigate = useNavigate();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isEditing, setIsEditing] = useState(false); // State to determine if we're adding or editing
 
-  console.log(selectedAddress);
+  // console.log(selectedAddress);
 
   useEffect(() => {
     if (isSuccess) {
@@ -52,10 +54,10 @@ const UserAddress = () => {
     setIsEditing(false);
   };
 
-  const handleDeleteAddress = (addressId) => {
+  const handleDeleteAddress = async (addressId) => {
     // console.log(addressId);
-    dispatch(deleteUserAddress(addressId)).then(() => {
-      dispatch(fetchUserAddresses());
+    await dispatch(deleteUserAddress(addressId)).then(() => {
+      window.location.reload();
     });
   };
 
@@ -70,7 +72,15 @@ const UserAddress = () => {
 
   useEffect(() => {
     dispatch(fetchUserAddresses());
-  }, [dispatch]);
+    const hasRefreshed = sessionStorage.getItem("hasRefreshed");
+
+    if (!hasRefreshed) {
+      // Set flag in sessionStorage to avoid refreshing again
+      sessionStorage.setItem("hasRefreshed", "true");
+
+      window.location.reload();
+    }
+  }, [dispatch, defaultAddress]);
 
   return (
     <div className="container-fluid pe-5">
@@ -86,6 +96,12 @@ const UserAddress = () => {
             + Add New Address
           </button>
         </div>
+
+        {addresses.length === 0 && (
+          <div className="my4 me-4 pt-4">
+            Please add an address before proceeding with payment.
+          </div>
+        )}
 
         {/* Default Address Section */}
         {defaultAddress && (
@@ -153,64 +169,71 @@ const UserAddress = () => {
         )}
 
         {/* Other Addresses Section */}
-
-        <div className="my-4 me-5">
-          <h6 className="fw-bold">Other Addresses</h6>
-          {otherAddresses.map((address) => (
-            <div
-              key={address._id}
-              className="card rounded-0 mb-4 position-relative"
-            >
+        {otherAddresses.length !== 0 && (
+          <div className="my-4 me-5">
+            <h6 className="fw-bold">Other Addresses</h6>
+            {otherAddresses.map((address) => (
               <div
-                className="position-absolute btn"
-                style={{ right: "10px", top: "5px" }}
-                onClick={() => handleDeleteAddress(address._id)} // Pass `address._id` here, not `defaultAddress._id`
+                key={address._id}
+                className="card rounded-0 mb-4 position-relative"
               >
-                <RxCross1 size={20} />
-              </div>
-              <div className="card-body text-secondary">
-                <h6 className="fw-bold text-dark text-capitalize">
-                  {address.fullName}{" "}
-                  {/* Use `address.fullName` instead of `defaultAddress.fullName` */}
-                </h6>
-                <p className="mb-0 small text-capitalize">{address.address}</p>
-                <p className="mb-0 small text-capitalize">{address.town}</p>
-                <p className="mb-0 small text-capitalize">
-                  {address.district},{" "}
-                  <span className="small text-capitalize">{address.state}</span>{" "}
-                  -{address.pincode}
-                </p>
-                <p className="small">
-                  Mobile:{" "}
-                  <span className="fw-bold text-dark">{address.mobileNo}</span>
-                </p>
+                <div
+                  className="position-absolute btn"
+                  style={{ right: "10px", top: "5px" }}
+                  onClick={() => handleDeleteAddress(address._id)} // Pass `address._id` here, not `defaultAddress._id`
+                >
+                  <RxCross1 size={20} />
+                </div>
+                <div className="card-body text-secondary">
+                  <h6 className="fw-bold text-dark text-capitalize">
+                    {address.fullName}{" "}
+                    {/* Use `address.fullName` instead of `defaultAddress.fullName` */}
+                  </h6>
+                  <p className="mb-0 small text-capitalize">
+                    {address.address}
+                  </p>
+                  <p className="mb-0 small text-capitalize">{address.town}</p>
+                  <p className="mb-0 small text-capitalize">
+                    {address.district},{" "}
+                    <span className="small text-capitalize">
+                      {address.state}
+                    </span>{" "}
+                    -{address.pincode}
+                  </p>
+                  <p className="small">
+                    Mobile:{" "}
+                    <span className="fw-bold text-dark">
+                      {address.mobileNo}
+                    </span>
+                  </p>
 
-                <div className="d-flex">
-                  <button
-                    type="button"
-                    className="btn text-teal justify-content-center align-items-center rounded-0 text-start  fw-bold"
-                    onClick={() => handleEditAddress(address)} // Pass `address` here
-                    data-bs-toggle="modal"
-                    data-bs-target="#userAddressModal"
-                  >
-                    Edit
-                  </button>
-                  <div
-                    className="border-start mx-1"
-                    style={{ height: "2rem" }}
-                  ></div>
-                  <Link
-                    type="button"
-                    className="btn w-100 text-start text-teal fw-bold"
-                    onClick={() => handleProceedToCheckout(address)}
-                  >
-                    Use this address
-                  </Link>
+                  <div className="d-flex">
+                    <button
+                      type="button"
+                      className="btn text-teal justify-content-center align-items-center rounded-0 text-start  fw-bold"
+                      onClick={() => handleEditAddress(address)} // Pass `address` here
+                      data-bs-toggle="modal"
+                      data-bs-target="#userAddressModal"
+                    >
+                      Edit
+                    </button>
+                    <div
+                      className="border-start mx-1"
+                      style={{ height: "2rem" }}
+                    ></div>
+                    <Link
+                      type="button"
+                      className="btn w-100 text-start text-teal fw-bold"
+                      onClick={() => handleProceedToCheckout(address)}
+                    >
+                      Use this address
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Modal for Add/Edit Address */}
         <div

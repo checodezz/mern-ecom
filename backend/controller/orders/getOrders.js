@@ -2,8 +2,14 @@ const orderModel = require("../../models/orderModel");
 
 const getOrdersController = async (req, res) => {
   try {
-    const allOrders = await orderModel.find().sort({ createdAt: -1 });
+    const userId = req.userId;
+    // console.log(userId);
+    const allOrders = await orderModel
+      .find({ userId: userId })
+      .sort({ createdAt: -1 });
     const totalOrders = await orderModel.countDocuments();
+
+    // console.log(allOrders);
 
     res.json({
       message: "All orders",

@@ -16,6 +16,7 @@ const UserOrders = () => {
   const navigate = useNavigate();
 
   const { orders, totalOrders } = useSelector((state) => state?.orders);
+  // console.log(orders);
 
   const { isSuccess, isError, message } = useSelector((state) => state.cart);
 
@@ -44,19 +45,20 @@ const UserOrders = () => {
           <p className="mb-0">from anytime</p>
         </div>
 
-        {totalOrders === 0 && (
-          <div className="card my-4 bg-white p-4 text-center">
-            <p className="fw-semibold mb-0">
-              It looks like you haven't placed any orders yet.{" "}
-            </p>
-            <p className="fw-bold mb-0">
-              <Link to="/" className="text-decoration-none text-teal">
-                Start shopping now
-              </Link>{" "}
-              and be the first to place an order!
-            </p>
-          </div>
-        )}
+        {totalOrders === 0 ||
+          (orders.length === 0 && (
+            <div className="card my-4 bg-white p-4 text-center">
+              <p className="fw-semibold mb-0">
+                It looks like you haven't placed any orders yet.{" "}
+              </p>
+              <p className="fw-bold mb-0">
+                <Link to="/" className="text-decoration-none text-teal">
+                  Start shopping now
+                </Link>{" "}
+                and be the first to place an order!
+              </p>
+            </div>
+          ))}
 
         {totalOrders !== 0 && (
           <div className="row bg-white my-4">
