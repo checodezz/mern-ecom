@@ -72,6 +72,7 @@ const ProductFilterForm = ({ filteredProducts }) => {
             } else {
               navigate(initialUrl);
             }
+            window.location.reload();
           }}
         >
           Clear All
